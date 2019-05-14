@@ -1,0 +1,38 @@
+﻿@page "{budgetId:Guid}"
+@model YourDollarR2.Pages.Budgets.EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Editing: @Model.Budget.ShortName</h1>
+
+<form method="post">
+    <input type="hidden" asp-for="Budget.Id" />
+    <div class="form-group">
+        <label asp-for="Budget.ShortName"></label>
+        <input asp-for="Budget.ShortName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Budget.CycleStartDate"></label>
+        <input asp-for="Budget.CycleStartDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Budget.CycleEndDate"></label>
+        <input asp-for="Budget.CycleEndDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Budget.Funds"></label>
+        <input asp-for="Budget.Funds" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Budget.Description"></label>
+        <input asp-for="Budget.Description" class="form-control" />
+    </div>
+    <button type ="submit" class="btn btn-primary">Save</button>
+</form>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial"/>
+}
+

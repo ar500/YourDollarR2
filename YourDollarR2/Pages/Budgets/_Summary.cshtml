@@ -1,0 +1,29 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using YourDollarR2.Core
+@model Budget
+
+<div class="card card-default">
+    <div class="card-header">
+        <h3>@Model.ShortName</h3>
+    </div>
+    <div class="card-body">
+        <span>Start Date: @Model.CycleStartDate</span>
+        <span>End Date: @Model.CycleEndDate</span>
+        <span>Description: @Model.Description</span>
+        <span>Funds: @Model.Funds</span>
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-lg" asp-page="./Detail"
+           asp-route-budgetId="@Model.Id">
+            <i class="oi oi-zoom-in"></i>
+        </a>
+        <a class="btn btn-lg" asp-page="./Edit"
+           asp-route-budgetId="@Model.Id">
+            <i class="oi oi-brush"></i>
+        </a>
+        <a class="btn btn-lg" asp-page="./Delete"
+           asp-route-budgetId="@Model.Id">
+            <i class="oi oi-trash"></i>
+        </a>
+    </div>
+</div>
