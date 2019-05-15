@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using YourDollarR2.Core;
 using YourDollarR2.DataAccess.Repositories;
+using YourDollarR2.Dtos;
 
 namespace YourDollarR2.Pages.Budgets
 {
@@ -13,7 +15,7 @@ namespace YourDollarR2.Pages.Budgets
     {
         private readonly IBudgetRepository _budgetRepository;
 
-        public IEnumerable<Budget> Budgets { get; set; }
+        public IEnumerable<BudgetDto> Budgets { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string SearchTerm { get; set; }
@@ -25,7 +27,9 @@ namespace YourDollarR2.Pages.Budgets
 
         public void OnGet()
         {
-            Budgets = _budgetRepository.GetBudgetsByName(SearchTerm);
+            var budgetsFromRepo = _budgetRepository.GetBudgetsByName(SearchTerm);
+
+            Budgets = Mapper.Map<IEnumerable<BudgetDto>>(budgetsFromRepo);
         }
     }
 }

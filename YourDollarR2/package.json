@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "gijgo": "^1.9.13",
     "tempusdominus-bootstrap-4": "^5.1.2"
   }
 }

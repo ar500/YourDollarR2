@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
 using System.Text;
 
@@ -7,18 +9,32 @@ namespace YourDollarR2.Core
 {
     public class Budget
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
+        [Required]
+        [MaxLength(50)]
         public string ShortName { get; set; }
 
+        [MaxLength(200)]
         public string Description { get; set; }
 
-        public DateTime CycleStartDate { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime CycleStartDate { get; set; } = DateTime.Now;
 
-        public DateTime CycleEndDate { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime CycleEndDate { get; set; } = DateTime.Now;
 
+        [DataType(DataType.Currency)]
         public decimal Funds { get; set; } = 0;
 
-        public string OwnerEmail { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        public string OwnerEmail { get; set; } = "removethis@soonest.opp";
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -14,6 +15,8 @@ using YourDollarR2.DataAccess;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using YourDollarR2.DataAccess.Repositories;
+using YourDollarR2.Dtos;
+using YourDollarR2.Core;
 
 namespace YourDollarR2
 {
@@ -67,9 +70,16 @@ namespace YourDollarR2
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseNodeModules(env);
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+            
+            AutoMapper.Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<BudgetDto, Budget>();
+                cfg.CreateMap<Budget, BudgetDto>();
+            });
 
             app.UseMvc();
         }

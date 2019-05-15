@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using YourDollarR2.Core;
 using YourDollarR2.DataAccess.Repositories;
+using YourDollarR2.Dtos;
 
 namespace YourDollarR2.Pages.Budgets
 {
@@ -16,7 +17,7 @@ namespace YourDollarR2.Pages.Budgets
         private readonly IBudgetRepository _budgetRepository;
         private readonly ILogger<DetailModel> _logger;
 
-        public Budget Budget { get; set; }
+        public BudgetDto Budget { get; set; }
 
         [TempData]
         public string Message { get; set; }
@@ -30,7 +31,10 @@ namespace YourDollarR2.Pages.Budgets
         public IActionResult OnGet(Guid budgetId)
         {
             _logger.LogError($"Getting detail information for Id: {budgetId}");
-            Budget = _budgetRepository.GetBudgetById(budgetId);
+
+            var budgetFromRepo = _budgetRepository.GetBudgetById(budgetId);
+            Budget = Mapper.Map<BudgetDto>(budgetFromRepo);
+
             if (Budget == null)
             {
                return RedirectToPage("../Error");

@@ -14,11 +14,11 @@
     </div>
     <div class="form-group">
         <label asp-for="Budget.CycleStartDate"></label>
-        <input asp-for="Budget.CycleStartDate" class="form-control" />
+        <input asp-for="Budget.CycleStartDate" name="CycleStartDate" type="text" class="form-control date" id="CycleStartDate" />
     </div>
     <div class="form-group">
         <label asp-for="Budget.CycleEndDate"></label>
-        <input asp-for="Budget.CycleEndDate" class="form-control" />
+        <input asp-for="Budget.CycleEndDate" name="CycleEndDate" type="text" class="form-control date" id="CycleEndDate" />
     </div>
     <div class="form-group">
         <label asp-for="Budget.Funds"></label>
@@ -28,11 +28,35 @@
         <label asp-for="Budget.Description"></label>
         <input asp-for="Budget.Description" class="form-control" />
     </div>
-    <button type ="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary">Save</button>
 </form>
 
 @section Scripts
 {
-    <partial name="_ValidationScriptsPartial"/>
+    <partial name="_ValidationScriptsPartial" />
+
+    <environment include="Development">
+        <script src="~/node_modules/gijgo/js/gijgo.min.js"></script>
+        <link href="~/node_modules/gijgo/css/gijgo.min.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <script src="~/node_modules/gijgo/js/gijgo.min.js"></script>
+        <link href="~/node_modules/gijgo/css/gijgo.min.css" rel="stylesheet" />
+    </environment>
+    
+    <script>
+        $(function(){
+            $('#CycleStartDate').datepicker({
+                uiLibrary: 'bootstrap4',
+                dateFormat: 'yyyy-dd-mm'
+            });
+        });
+        $(function(){
+            $('#CycleEndDate').datepicker({
+                uiLibrary: 'bootstrap4',
+                dateFormat: 'mm/dd/yyyy'
+            });
+        });
+    </script>
 }
 
