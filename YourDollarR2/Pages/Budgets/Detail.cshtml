@@ -13,8 +13,8 @@
     <h1>@Model.Budget.ShortName</h1>
 </div>
 <div class="card-body">
-    <span>Start Date: @Model.Budget.CycleStartDate</span>
-    <span>End Date: @Model.Budget.CycleEndDate</span>
+    <span>Start Date: @Model.Budget.CycleStartDate.ToString("d")</span>
+    <span>End Date: @Model.Budget.CycleEndDate.ToString("d")</span>
     <span>Description: @Model.Budget.Description</span>
     <span>Funds: @Model.Budget.Funds</span>
 </div>

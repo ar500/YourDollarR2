@@ -20,6 +20,9 @@ namespace YourDollarR2.Pages.Budgets
         [BindProperty(SupportsGet = true)]
         public string SearchTerm { get; set; }
 
+        [TempData]
+        public string Message { get; set; }
+
         public ListModel(IBudgetRepository budgetRepository)
         {
             _budgetRepository = budgetRepository;

@@ -19,8 +19,17 @@
     </div>
 </form>
 
+<a asp-page=".\Edit" class="btn btn-light">
+    <i class="oi oi-plus"></i> New Budget
+</a>
+
+@if (Model.Message != null)
+{
+    <div class="alert alert-info">@Model.Message</div>
+}
+
 @foreach (var budget in Model.Budgets)
 {
-    <partial name="_Summary" model="budget"/>
+    <partial name="_Summary" model="budget" />
 }
 
