@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using YourDollarR2.Core;
 
 namespace YourDollarR2.DataAccess.Repositories

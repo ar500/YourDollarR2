@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using YourDollarR2.Core;
 
 namespace YourDollarR2.DataAccess.Repositories
@@ -12,6 +11,7 @@ namespace YourDollarR2.DataAccess.Repositories
         BudgetCategory UpdateCategory(BudgetCategory category);
         BudgetCategory AddCategory(BudgetCategory category);
         BudgetCategory DeleteCategory(Guid categoryId);
+        IEnumerable<string> GetCategoryNames();
         bool SaveChanges();
     }
 }

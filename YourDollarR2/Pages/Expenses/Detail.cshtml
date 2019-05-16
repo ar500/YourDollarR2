@@ -1,0 +1,24 @@
+﻿@page "{expenseId:Guid}"
+@model YourDollarR2.Pages.Expenses.DetailModel
+@{
+    ViewData["Title"] = "Expense Detail";
+}
+
+@if (Model.Message != null)
+{
+    <div class="alert alert-info">@Model.Message</div>
+}
+
+<div class="card card-header">
+    <h1>@Model.Expense.ShortName</h1>
+</div>
+<div class="card-body">
+    <span>@Model.Expense.Description</span>
+    <span>@Model.Expense.PayoutAmount</span>
+    <span>@Model.Expense.BudgetCategory</span>
+    <span>@Model.Expense.CompanyName</span>
+    <span>@Model.Expense.PayoutAccountNumber</span>
+</div>
+<div class="card-footer">
+    <a asp-page="./List" class="btn btn-light">See all expenses.</a>
+</div>

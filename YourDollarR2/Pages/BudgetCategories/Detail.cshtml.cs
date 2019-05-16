@@ -28,7 +28,7 @@ namespace YourDollarR2.Pages.BudgetCategories
             BudgetCategory = Mapper.Map<BudgetCategoryDto>(categoryFromRepo);
             if (BudgetCategory == null)
             {
-                return RedirectToPage("../Error");
+                return RedirectToPage("../NotFound");
             }
 
             return Page();

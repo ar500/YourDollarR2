@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using YourDollarR2.Core;
 
 namespace YourDollarR2.DataAccess.Repositories
 {
     public class InMemoryBudgetRepository : IBudgetRepository
     {
-        private readonly List<Budget> _inMemoryBudgets;
+        private List<Budget> _inMemoryBudgets;
 
         public InMemoryBudgetRepository()
         {

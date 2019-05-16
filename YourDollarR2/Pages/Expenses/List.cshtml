@@ -1,0 +1,41 @@
+﻿@page
+@model YourDollarR2.Pages.Expenses.ListModel
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>All Expenses</h1>
+
+<form method="get">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="search" class="form-control" asp-for="SearchTerm" />
+            <span class="input-group-append">
+                <button class="btn btn-light">
+                    <i class="oi oi-magnifying-glass"></i>
+                </button>
+            </span>
+        </div>
+    </div>
+</form>
+
+<a asp-page=".\Edit" class="btn btn-light">
+    <i class="oi oi-plus"></i> New Category
+</a>
+
+<div class="container-fluid">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card-deck-wrapper">
+                <div class="card-deck">
+                    @foreach (var expense in Model.Expenses)
+                    {
+                        <div class="col-sm-4">
+                            <partial name="_Summary" model="expense" />
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

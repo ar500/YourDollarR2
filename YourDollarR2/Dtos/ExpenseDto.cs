@@ -1,13 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace YourDollarR2.Core
+namespace YourDollarR2.Dtos
 {
-    public class Expense
+    public class ExpenseDto
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         [Required]
@@ -29,6 +26,6 @@ namespace YourDollarR2.Core
         [MaxLength(100)]
         public string PayoutAccountNumber { get; set; }
 
-        public BudgetCategory BudgetCategory { get; set; }
+        public BudgetCategoryDto BudgetCategory { get; set; }
     }
 }

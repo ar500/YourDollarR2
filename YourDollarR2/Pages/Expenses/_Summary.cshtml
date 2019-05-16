@@ -1,0 +1,42 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using YourDollarR2.Dtos
+@model ExpenseDto
+
+<div class="card card-default mb-5" style="width: 20rem;">
+    <div class="card-body">
+        <h3 class="card-title">@Model.ShortName</h3>
+        <span class="list-group-item">Description: @Model.Description</span>
+        @if (@Model.BudgetCategory != null)
+        {
+            <span class="list-group-item">
+                Category:<a class="btn btn-dark" asp-page=".\Detail"
+                            asp-route-categoryId="@Model.BudgetCategory.Id">
+                    @Model.BudgetCategory.ShortName
+                </a>
+            </span>
+        }
+        else
+        {
+            <span class="list-group-item">
+                Category:<a class="btn btn-dark" asp-page=".\AttachCategory"
+                            asp-route-categoryId="@Model.Id">
+                    Attach Category
+                </a>
+            </span>
+        }
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-lg" asp-page="./Detail"
+           asp-route-expenseId="@Model.Id">
+            <i class="oi oi-zoom-in"></i>
+        </a>
+        <a class="btn btn-lg" asp-page="./Edit"
+           asp-route-expenseId="@Model.Id">
+            <i class="oi oi-brush"></i>
+        </a>
+        <a class="btn btn-lg" asp-page="./Delete"
+           asp-route-expenseId="@Model.Id">
+            <i class="oi oi-trash"></i>
+        </a>
+    </div>
+</div>

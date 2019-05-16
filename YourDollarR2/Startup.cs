@@ -44,6 +44,7 @@ namespace YourDollarR2
 
             services.AddSingleton<IBudgetRepository, InMemoryBudgetRepository>();
             services.AddSingleton<IBudgetCategoryRepository, InMemoryCategoryRepository>();
+            services.AddSingleton<IExpenseRepository, InMemoryExpenseRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -77,6 +78,8 @@ namespace YourDollarR2
                 cfg.CreateMap<Budget, BudgetDto>();
                 cfg.CreateMap<BudgetCategoryDto, BudgetCategory>();
                 cfg.CreateMap<BudgetCategory, BudgetCategoryDto>();
+                cfg.CreateMap<ExpenseDto, Expense>();
+                cfg.CreateMap<Expense, ExpenseDto>();
             });
 
             app.UseMvc();
