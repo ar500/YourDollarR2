@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using YourDollarR2.Core;
 using YourDollarR2.DataAccess.Repositories;
 using YourDollarR2.Dtos;
@@ -15,24 +13,30 @@ namespace YourDollarR2.Pages.Expenses
     {
         private readonly IExpenseRepository _expenseRepository;
         private readonly IBudgetCategoryRepository _budgetCategoryRepository;
-        private readonly IHtmlHelper _htmlHelper;
 
         [BindProperty]
         public ExpenseDto Expense { get; set; }
 
         [BindProperty]
-        public IEnumerable<SelectListItem> Categories { get; set; }
+        public List<BudgetCategoryDto> Categories { get; set; }
 
-        public EditModel(IExpenseRepository expenseRepository, IBudgetCategoryRepository budgetCategoryRepository, 
-            IHtmlHelper htmlHelper)
+        [BindProperty]
+        public Guid ReturnedCategoryId { get; set; }
+
+        public EditModel(IExpenseRepository expenseRepository, IBudgetCategoryRepository budgetCategoryRepository)
         {
             _expenseRepository = expenseRepository;
             _budgetCategoryRepository = budgetCategoryRepository;
-            _htmlHelper = htmlHelper;
         }
 
         public IActionResult OnGet(Guid? expenseId)
         {
+            var categoriesFromRepo = _budgetCategoryRepository.GetCategoriesByName();
+
+            Categories = Mapper.Map<List<BudgetCategoryDto>>(categoriesFromRepo);
+
+            Categories.Insert(0, new BudgetCategoryDto {Id = Guid.NewGuid(), ShortName = "Select a Category"});
+
             if (expenseId.HasValue)
             {
                 var expenseFromRepo = _expenseRepository.GetExpenseById(expenseId.Value);
@@ -58,14 +62,27 @@ namespace YourDollarR2.Pages.Expenses
                 return Page();
             }
 
+            
+            
             var expenseFromUser = Mapper.Map<Expense>(Expense);
 
             if (Expense.Id == Guid.Empty)
             {
+                var category = _budgetCategoryRepository.GetCategoryById(ReturnedCategoryId);
+                if (category != null)
+                {
+                    expenseFromUser.BudgetCategory = category;
+                }
+
                 _expenseRepository.AddExpense(expenseFromUser);
             }
             else
             {
+                var category = _budgetCategoryRepository.GetCategoryById(ReturnedCategoryId);
+                if (category != null)
+                {
+                    expenseFromUser.BudgetCategory = category;
+                }
                 _expenseRepository.UpdateExpense(expenseFromUser);
             }
 

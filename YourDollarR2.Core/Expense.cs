@@ -21,11 +21,9 @@ namespace YourDollarR2.Core
         [Required]
         public decimal PayoutAmount { get; set; }
 
-        [Required]
         [MaxLength(50)]
         public string CompanyName { get; set; }
 
-        [Required]
         [MaxLength(100)]
         public string PayoutAccountNumber { get; set; }
 

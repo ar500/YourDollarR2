@@ -7,7 +7,7 @@ namespace YourDollarR2.DataAccess.Repositories
 {
     public class InMemoryCategoryRepository : IBudgetCategoryRepository
     {
-        private List<BudgetCategory> _inMemoryCategories;
+        private readonly List<BudgetCategory> _inMemoryCategories;
         public InMemoryCategoryRepository()
         {
             _inMemoryCategories = new List<BudgetCategory>
@@ -67,12 +67,6 @@ namespace YourDollarR2.DataAccess.Repositories
         public BudgetCategory GetCategoryById(Guid categoryId)
         {
             return _inMemoryCategories.FirstOrDefault(c => c.Id == categoryId);
-        }
-
-        public IEnumerable<string> GetCategoryNames()
-        {
-            return from c in _inMemoryCategories
-                select c.ShortName;
         }
 
         public bool SaveChanges()

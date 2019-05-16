@@ -78,8 +78,10 @@ namespace YourDollarR2
                 cfg.CreateMap<Budget, BudgetDto>();
                 cfg.CreateMap<BudgetCategoryDto, BudgetCategory>();
                 cfg.CreateMap<BudgetCategory, BudgetCategoryDto>();
+                cfg.CreateMap<BudgetCategoryForSelectListDto, BudgetCategory>();
                 cfg.CreateMap<ExpenseDto, Expense>();
                 cfg.CreateMap<Expense, ExpenseDto>();
+
             });
 
             app.UseMvc();

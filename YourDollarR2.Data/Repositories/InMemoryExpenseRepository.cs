@@ -78,7 +78,7 @@ namespace YourDollarR2.DataAccess.Repositories
             return expenseToUpdate;
         }
 
-        public Expense DeleteBudget(Guid expenseId)
+        public Expense DeleteExpense(Guid expenseId)
         {
             var expenseToDelete = GetExpenseById(expenseId);
             if (expenseToDelete != null)

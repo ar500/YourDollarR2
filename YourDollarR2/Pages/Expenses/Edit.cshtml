@@ -1,4 +1,5 @@
 ﻿@page "{expenseId:guid?}"
+@using YourDollarR2.Dtos
 @model YourDollarR2.Pages.Expenses.EditModel
 @{
     ViewData["Title"] = "Edit";
@@ -12,6 +13,11 @@
         <label asp-for="Expense.ShortName"></label>
         <input asp-for="Expense.ShortName" class="form-control" />
         <span class="text-danger" asp-validation-for="Expense.ShortName"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Expense.BudgetCategory"></label>
+        <select asp-for="ReturnedCategoryId" class="form-control" 
+                asp-items="@(new SelectList(Model.Categories, "Id", "ShortName"))"></select>
     </div>
     <div class="form-group">
         <label asp-for="Expense.Description"></label>

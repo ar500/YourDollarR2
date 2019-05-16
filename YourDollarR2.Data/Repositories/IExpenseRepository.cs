@@ -10,7 +10,7 @@ namespace YourDollarR2.DataAccess.Repositories
         Expense GetExpenseById(Guid expenseId);
         Expense UpdateExpense(Expense expense);
         Expense AddExpense(Expense expense);
-        Expense DeleteBudget(Guid expenseId);
+        Expense DeleteExpense(Guid expenseId);
         Expense AttachCategory(Guid expenseId, Guid categoryId);
         Expense RemoveCategory(Guid expenseId);
         bool SaveChanges();
