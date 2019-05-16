@@ -1,0 +1,24 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using YourDollarR2.Dtos
+@model BudgetCategoryDto
+
+<div class="card card-default mb-3" style="width: 18rem; height: 18rem;">
+    <div class="card-body">
+        <h3 class="card-title">@Model.ShortName</h3>
+        <span class="list-group-item">@Model.Description</span>
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-lg" asp-page="./Detail"
+           asp-route-budgetId="@Model.Id">
+            <i class="oi oi-zoom-in"></i>
+        </a>
+        <a class="btn btn-lg" asp-page="./Edit"
+           asp-route-budgetId="@Model.Id">
+            <i class="oi oi-brush"></i>
+        </a>
+        <a class="btn btn-lg" asp-page="./Delete"
+           asp-route-budgetId="@Model.Id">
+            <i class="oi oi-trash"></i>
+        </a>
+    </div>
+</div>

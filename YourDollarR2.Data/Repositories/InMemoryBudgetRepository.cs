@@ -55,7 +55,7 @@ namespace YourDollarR2.DataAccess.Repositories
 
         public Budget DeleteBudget(Guid budgetId)
         {
-            var budget = _inMemoryBudgets.FirstOrDefault(b => b.Id == budgetId);
+            var budget = GetBudgetById(budgetId);
             if (budget != null)
             {
                 _inMemoryBudgets.Remove(budget);
@@ -84,7 +84,7 @@ namespace YourDollarR2.DataAccess.Repositories
 
         public Budget UpdateBudget(Budget budget)
         {
-            var budgetFromStore = _inMemoryBudgets.FirstOrDefault(b => b.Id == budget.Id);
+            var budgetFromStore = GetBudgetById(budget.Id);
             if (budgetFromStore != null)
             {
                 budgetFromStore.CycleStartDate = budget.CycleStartDate;

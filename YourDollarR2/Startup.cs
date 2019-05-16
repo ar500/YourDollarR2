@@ -1,14 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using YourDollarR2.DataAccess;
@@ -49,6 +43,7 @@ namespace YourDollarR2
             services.AddHttpContextAccessor();
 
             services.AddSingleton<IBudgetRepository, InMemoryBudgetRepository>();
+            services.AddSingleton<IBudgetCategoryRepository, InMemoryCategoryRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -79,6 +74,8 @@ namespace YourDollarR2
             {
                 cfg.CreateMap<BudgetDto, Budget>();
                 cfg.CreateMap<Budget, BudgetDto>();
+                cfg.CreateMap<BudgetCategoryDto, BudgetCategory>();
+                cfg.CreateMap<BudgetCategory, BudgetCategoryDto>();
             });
 
             app.UseMvc();
