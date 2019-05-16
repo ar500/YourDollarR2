@@ -6,8 +6,6 @@ namespace YourDollarR2.Dtos
 {
     public class BudgetCategoryDto
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         [Required]

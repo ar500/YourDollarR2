@@ -64,6 +64,7 @@ namespace YourDollarR2
             }
 
             app.UseHttpsRedirection();
+            app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseNodeModules(env);
             app.UseCookiePolicy();

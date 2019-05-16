@@ -1,8 +1,14 @@
-﻿@page
+﻿@page "{categoryId:guid}"
 @model YourDollarR2.Pages.BudgetCategories.DeleteModel
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
-
+<h2>Remove Category!</h2>
+<div class="alert alert-danger">
+    Are you sure that you want to remove the category @Model.BudgetCategory.ShortName?
+</div>
+<form method="post">
+    <button type="submit" class="btn btn-danger">Yes!</button>
+    <a asp-page="List" class="btn btn-default">Cancel</a>
+</form>

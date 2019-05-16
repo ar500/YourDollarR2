@@ -1,8 +1,20 @@
-﻿@page
+﻿@page "{categoryId:guid}"
 @model YourDollarR2.Pages.BudgetCategories.DetailModel
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = "Budget Category Detail";
 }
 
-<h1>Detail</h1>
+@if (Model.Message != null)
+{
+    <div class="alert alert-info">@Model.Message</div>
+}
 
+<div class="card card-header">
+    <h1>@Model.BudgetCategory.ShortName</h1>
+</div>
+<div class="card-body">
+    <span>@Model.BudgetCategory.Description</span>
+</div>
+<div class="card-footer">
+    <a asp-page="./List" class="btn btn-light">See all categories.</a>
+</div>

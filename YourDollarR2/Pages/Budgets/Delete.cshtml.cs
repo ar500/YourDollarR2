@@ -37,6 +37,11 @@ namespace YourDollarR2.Pages.Budgets
         {
             var budget = _budgetRepository.DeleteBudget(budgetId);
 
+            if (budget == null)
+            {
+                return RedirectToPage("./List");
+            }
+
             if (!_budgetRepository.SaveChanges())
             {
                 return StatusCode(500, "The server was unable to handle your request.");

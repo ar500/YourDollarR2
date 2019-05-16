@@ -24,9 +24,9 @@ namespace YourDollarR2.Pages.BudgetCategories
             _categoryRepository = categoryRepository;
         }
 
-        public IActionResult OnGet(string shortName = null)
+        public IActionResult OnGet()
         {
-            var categoriesFromStore = _categoryRepository.GetCategoriesByName(shortName);
+            var categoriesFromStore = _categoryRepository.GetCategoriesByName(SearchTerm);
 
             Categories = Mapper.Map<IEnumerable<BudgetCategoryDto>>(categoriesFromStore);
 
