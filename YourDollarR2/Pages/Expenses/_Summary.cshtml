@@ -5,25 +5,22 @@
 <div class="card card-default mb-5" style="width: 20rem;">
     <div class="card-body">
         <h3 class="card-title">@Model.ShortName</h3>
-        <span class="list-group-item">Description: @Model.Description</span>
-        @if (@Model.BudgetCategory != null)
-        {
-            <span class="list-group-item">
-                Category:<a class="btn btn-dark" asp-page=".\Detail"
-                            asp-route-categoryId="@Model.BudgetCategory.Id">
+        <h6 class="card-subtitle mb-2 text-muted">
+            @if (@Model.BudgetCategory != null)
+            {
+                <a class="btn btn-sm btn-outline-info" asp-page=".\Edit" asp-route-expenseId="@Model.Id">
                     @Model.BudgetCategory.ShortName
                 </a>
-            </span>
-        }
-        else
-        {
-            <span class="list-group-item">
-                Category:<a class="btn btn-dark" asp-page=".\AttachCategory"
-                            asp-route-categoryId="@Model.Id">
+            }
+            else
+            {
+                <a class="btn btn-sm btn-outline-info" asp-page=".\Edit" asp-route-expenseId="@Model.Id">
                     Attach Category
                 </a>
-            </span>
-        }
+            }
+        </h6>
+        <span class="list-group-item">Description: @Model.Description</span>
+       
     </div>
     <div class="card-footer">
         <a class="btn btn-lg" asp-page="./Detail"
@@ -40,3 +37,4 @@
         </a>
     </div>
 </div>
+
