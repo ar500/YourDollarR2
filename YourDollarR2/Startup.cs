@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using YourDollarR2.DataAccess.Repositories;
 using YourDollarR2.Dtos;
 using YourDollarR2.Core;
+using YourDollarR2.Core.Services;
 
 namespace YourDollarR2
 {
@@ -46,11 +47,14 @@ namespace YourDollarR2
             services.AddSingleton<IBudgetCategoryRepository, InMemoryCategoryRepository>();
             services.AddSingleton<IExpenseRepository, InMemoryExpenseRepository>();
 
+            services.AddTransient<IFundsInCategoryService, FundsInCategoryService>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
+            IFundsInCategoryService catService)
         {
             if (env.IsDevelopment())
             {
@@ -75,7 +79,8 @@ namespace YourDollarR2
             AutoMapper.Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<BudgetDto, Budget>();
-                cfg.CreateMap<Budget, BudgetDto>();
+                cfg.CreateMap<Budget, BudgetDto>()
+                    .BeforeMap((s, d) => d.CategoryGroups = catService.GroupExpensesByCat(s.Expenses));
                 cfg.CreateMap<BudgetCategoryDto, BudgetCategory>();
                 cfg.CreateMap<BudgetCategory, BudgetCategoryDto>();
                 cfg.CreateMap<BudgetCategoryForSelectListDto, BudgetCategory>();

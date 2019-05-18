@@ -2,7 +2,7 @@
 @using YourDollarR2.Dtos
 @model BudgetCategoryDto
 
-<div class="card card-default mb-3" style="width: 18rem; height: 18rem;">
+<div class="card card-default mb-3" style="width: 18rem;">
     <div class="card-body">
         <h3 class="card-title">@Model.ShortName</h3>
         <span class="list-group-item">@Model.Description</span>
@@ -20,5 +20,7 @@
            asp-route-categoryId="@Model.Id">
             <i class="oi oi-trash"></i>
         </a>
+        
+
     </div>
 </div>

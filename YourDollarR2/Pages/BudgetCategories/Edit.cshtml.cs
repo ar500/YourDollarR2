@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using YourDollarR2.Core;
 using YourDollarR2.DataAccess.Repositories;
 using YourDollarR2.Dtos;
@@ -20,7 +22,7 @@ namespace YourDollarR2.Pages.BudgetCategories
             _categoryRepository = categoryRepository;
         }
 
-        public IActionResult OnGet(Guid? categoryId)
+        public void OnGet(Guid? categoryId)
         {
             if (categoryId.HasValue)
             {
@@ -31,8 +33,6 @@ namespace YourDollarR2.Pages.BudgetCategories
             {
                 BudgetCategory = new BudgetCategoryDto();
             }
-
-            return Page();
         }
 
         public IActionResult OnPost()

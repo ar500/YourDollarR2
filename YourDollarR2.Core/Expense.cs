@@ -19,6 +19,7 @@ namespace YourDollarR2.Core
         public string Description { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal PayoutAmount { get; set; }
 
         [MaxLength(50)]
@@ -28,5 +29,7 @@ namespace YourDollarR2.Core
         public string PayoutAccountNumber { get; set; }
 
         public BudgetCategory BudgetCategory { get; set; }
+
+        public Budget Budget { get; set; }
     }
 }

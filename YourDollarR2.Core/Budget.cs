@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -33,5 +34,7 @@ namespace YourDollarR2.Core
         [Required]
         [DataType(DataType.EmailAddress)]
         public string OwnerEmail { get; set; } = "removethis@soonest.opp";
+
+        public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
     }
 }

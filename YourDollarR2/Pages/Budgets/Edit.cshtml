@@ -30,8 +30,17 @@
     </div>
     <div class="form-group">
         <label asp-for="Budget.Funds"></label>
-        <input asp-for="Budget.Funds" class="form-control" />
+        <input asp-for="Budget.Funds" class="form-control"/>
         <span class="text-danger" asp-validation-for="Budget.Funds"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Budget.Expenses"></label>
+        <select asp-for="ReturnedExpenseIds" class="form-control"
+                asp-items="@(new SelectList(Model.Expenses, "Id", "ShortName"))"></select>
+        <a asp-page="..\BudgetCategories\Edit" class="btn-outline-info btn-sm">
+            <i class="oi oi-plus"></i>
+            Add a new category
+        </a>
     </div>
 
     <button type="submit" class="btn btn-primary">Save</button>

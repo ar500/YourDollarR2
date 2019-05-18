@@ -16,6 +16,7 @@ namespace YourDollarR2.Dtos
         public string Description { get; set; }
 
         [Required]
+        [DataType(DataType.Currency)]
         public decimal PayoutAmount { get; set; }
 
         [MaxLength(50)]

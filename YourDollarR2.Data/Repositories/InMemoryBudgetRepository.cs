@@ -7,9 +7,10 @@ namespace YourDollarR2.DataAccess.Repositories
 {
     public class InMemoryBudgetRepository : IBudgetRepository
     {
-        private List<Budget> _inMemoryBudgets;
+        private readonly IExpenseRepository _expenseRepository;
+        private readonly List<Budget> _inMemoryBudgets;
 
-        public InMemoryBudgetRepository()
+        public InMemoryBudgetRepository(IExpenseRepository expenseRepository)
         {
             _inMemoryBudgets = new List<Budget>
             {
@@ -44,12 +45,29 @@ namespace YourDollarR2.DataAccess.Repositories
                     OwnerEmail = "Kanisha@mywork.com"
                 }
             };
+            _expenseRepository = expenseRepository;
         }
 
         public Budget AddBudget(Budget budget)
         {
             _inMemoryBudgets.Add(budget);
             return budget;
+        }
+
+        public Budget AttachExpense(Guid budgetId, Guid expenseId)
+        {
+            var expenseToAttach = _expenseRepository.GetExpenseById(expenseId);
+            if (expenseToAttach != null)
+            {
+                var budget = GetBudgetById(budgetId);
+                if (budget != null)
+                {
+                    budget.Expenses.Add(expenseToAttach);
+                    return budget;
+                }
+            }
+
+            return null;
         }
 
         public Budget DeleteBudget(Guid budgetId)
@@ -74,6 +92,22 @@ namespace YourDollarR2.DataAccess.Repositories
                 where string.IsNullOrWhiteSpace(shortName) || b.ShortName.Contains(shortName)
                 orderby b.ShortName
                 select b;
+        }
+
+        public Budget RemoveExpense(Guid budgetId, Guid expenseId)
+        {
+            var expenseToRemove = _expenseRepository.GetExpenseById(expenseId);
+            if (expenseToRemove != null)
+            {
+                var budget = GetBudgetById(budgetId);
+                if (budget != null)
+                {
+                    budget.Expenses.Remove(expenseToRemove);
+                    return budget;
+                }
+            }
+
+            return null;
         }
 
         public bool SaveChanges()

@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
+using YourDollarR2.Core;
+using YourDollarR2.Core.Services;
 
 namespace YourDollarR2.Dtos
 {
@@ -30,5 +34,9 @@ namespace YourDollarR2.Dtos
 
         [DataType(DataType.EmailAddress)]
         public string OwnerEmail { get; set; } = "removethis@soonest.opp";
+
+        public ICollection<ExpenseDto> Expenses { get; set; } = new List<ExpenseDto>();
+
+        public IEnumerable<FundsInCategory> CategoryGroups { get; set; }
     }
 }
