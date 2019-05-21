@@ -61,7 +61,7 @@ namespace YourDollarR2.DataAccess.Repositories
 
         public Expense AttachCategory(Guid expenseId, Guid categoryId)
         {
-            var categoryToAttach = _categoryRepository.GetCategoryById(categoryId);
+            var categoryToAttach = _categoryRepository.GetCategoryById(categoryId).Result;
             if (categoryToAttach == null)
             {
                 return null;

@@ -6,32 +6,23 @@
     <div class="card-body">
         <h3 class="card-title">@Model.ShortName</h3>
         <h6 class="card-subtitle mb-2 text-muted">
-            @if (@Model.BudgetCategory != null)
-            {
-                <a class="btn btn-sm btn-outline-info" asp-page=".\Edit" asp-route-expenseId="@Model.Id">
-                    @Model.BudgetCategory.ShortName
-                </a>
-            }
-            else
-            {
-                <a class="btn btn-sm btn-outline-info" asp-page=".\Edit" asp-route-expenseId="@Model.Id">
-                    Attach Category
-                </a>
-            }
+            <a class="btn btn-sm btn-outline-info" asp-page=".\Edit" asp-route-expenseId="@Model.Id">
+                @Model.BudgetCategory.ShortName
+            </a>
         </h6>
         <span class="list-group-item">Description: @Model.Description</span>
        
     </div>
     <div class="card-footer">
-        <a class="btn btn-lg" asp-page="./Detail"
+        <a class="btn btn-lg" asp-page="Details"
            asp-route-expenseId="@Model.Id">
             <i class="oi oi-zoom-in"></i>
         </a>
-        <a class="btn btn-lg" asp-page="./Edit"
+        <a class="btn btn-lg" asp-page="Edit"
            asp-route-expenseId="@Model.Id">
             <i class="oi oi-brush"></i>
         </a>
-        <a class="btn btn-lg" asp-page="./Delete"
+        <a class="btn btn-lg" asp-page="Delete"
            asp-route-expenseId="@Model.Id">
             <i class="oi oi-trash"></i>
         </a>

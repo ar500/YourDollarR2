@@ -1,6 +1,4 @@
-﻿@using Microsoft.EntityFrameworkCore
-@using YourDollarR2.Dtos
-@model BudgetCategoryDto
+﻿@model BudgetCategoryDto
 
 <div class="card card-default mb-3" style="width: 18rem;">
     <div class="card-body">
@@ -8,19 +6,18 @@
         <span class="list-group-item">@Model.Description</span>
     </div>
     <div class="card-footer">
-        <a class="btn btn-lg" asp-page="./Detail"
-           asp-route-categoryId="@Model.Id">
+        <a class="btn btn-lg" asp-page="./Details"
+           asp-route-Id="@Model.Id">
             <i class="oi oi-zoom-in"></i>
         </a>
         <a class="btn btn-lg" asp-page="./Edit"
-           asp-route-categoryId="@Model.Id">
+           asp-route-Id="@Model.Id">
             <i class="oi oi-brush"></i>
         </a>
         <a class="btn btn-lg" asp-page="./Delete"
-           asp-route-categoryId="@Model.Id">
+           asp-route-Id="@Model.Id">
             <i class="oi oi-trash"></i>
         </a>
-        
-
     </div>
 </div>
+

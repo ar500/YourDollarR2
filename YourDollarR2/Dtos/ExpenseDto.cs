@@ -25,6 +25,9 @@ namespace YourDollarR2.Dtos
         [MaxLength(100)]
         public string PayoutAccountNumber { get; set; }
 
+        [Required]
+        public Guid ReturnedCategoryId { get; set; }
+
         public BudgetCategoryDto BudgetCategory { get; set; }
     }
 }

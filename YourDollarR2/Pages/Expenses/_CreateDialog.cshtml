@@ -1,0 +1,51 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using YourDollarR2.Dtos
+@model ExpenseDto
+
+<form method="post">
+    <input type="hidden" asp-for="@Model.Id" />
+    <div class="form-group">
+        <label asp-for="@Model.ShortName"></label>
+        <input asp-for="@Model.ShortName" class="form-control" />
+        <span class="text-danger" asp-validation-for="@Model.ShortName"></span>
+    </div>
+    @*<div class="form-group">
+        <label asp-for="@Model.BudgetCategory"></label>
+        <select asp-for="ReturnedCategoryId" class="form-control"
+                asp-items="@(new SelectList(Model.Categories, "Id", "ShortName"))"></select>
+        <a asp-page="..\BudgetCategories\Edit" class="btn-outline-info btn-sm">
+            <i class="oi oi-plus"></i>
+            Add a new category
+        </a>
+    </div>*@
+    <div class="form-group">
+        <label asp-for="@Model.Description"></label>
+        <input asp-for="@Model.Description" class="form-control" />
+        <span class="text-danger" asp-validation-for="@Model.Description"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.PayoutAmount"></label>
+        <input asp-for="@Model.PayoutAmount" class="form-control" />
+        <span class="text-danger" asp-validation-for="@Model.PayoutAmount"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.CompanyName"></label>
+        <input asp-for="@Model.CompanyName" class="form-control" />
+        <span class="text-danger" asp-validation-for="@Model.CompanyName"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.PayoutAccountNumber"></label>
+        <input asp-for="@Model.PayoutAccountNumber" class="form-control" />
+        <span class="text-danger" asp-validation-for="@Model.PayoutAccountNumber"></span>
+    </div>
+    <button type="submit" id="save" class="btn btn-primary">Save</button>
+</form>
+
+@section Scripts
+{
+    <script>
+        $('#save').on('click', function() {
+            var shortName = 
+        })
+    </script>
+}

@@ -40,10 +40,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Budgets/List">Budgets</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Expenses/List">Expenses</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/ExpensesR2/Index">Expenses</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/BudgetCategories/List">Budget Categories</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/BudgetCategories/Index">Budget Categories</a>
                         </li>
                     </ul>
                 </div>
@@ -54,6 +54,21 @@
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @RenderBody()
+            
+            <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createModalLabel">Create Modal</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        @RenderSection("Modals", required: false)
+                        
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -84,5 +99,6 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 </body>
 </html>

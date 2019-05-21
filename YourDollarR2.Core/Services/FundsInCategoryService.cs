@@ -17,6 +17,7 @@ namespace YourDollarR2.Core.Services
 
             return expenses
                 .GroupBy(e => e.BudgetCategory)
+                .Where(g => g.Key != null)
                 .Select(g => new FundsInCategory
                 {
                     Category = g.FirstOrDefault().BudgetCategory.ShortName,

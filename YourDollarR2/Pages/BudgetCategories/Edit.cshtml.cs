@@ -1,66 +1,82 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using YourDollarR2.Core;
-using YourDollarR2.DataAccess.Repositories;
+using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
 namespace YourDollarR2.Pages.BudgetCategories
 {
     public class EditModel : PageModel
     {
-        private readonly IBudgetCategoryRepository _categoryRepository;
+        private readonly YourDollarR2.DataAccess.YourDollarContext _context;
+
+        public EditModel(YourDollarR2.DataAccess.YourDollarContext context)
+        {
+            _context = context;
+        }
 
         [BindProperty]
         public BudgetCategoryDto BudgetCategory { get; set; }
 
-        public EditModel(IBudgetCategoryRepository categoryRepository)
+        public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            _categoryRepository = categoryRepository;
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var categoryFromRepo = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
+            var mappedCategory = Mapper.Map<BudgetCategoryDto>(categoryFromRepo);
+
+            BudgetCategory = mappedCategory;
+
+            if (BudgetCategory == null)
+            {
+                return NotFound();
+            }
+            return Page();
         }
 
-        public void OnGet(Guid? categoryId)
-        {
-            if (categoryId.HasValue)
-            {
-                var category = _categoryRepository.GetCategoryById(categoryId.Value);
-                BudgetCategory = Mapper.Map<BudgetCategoryDto>(category);
-            }
-            else
-            {
-                BudgetCategory = new BudgetCategoryDto();
-            }
-        }
-
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            var categoryFromUser = Mapper.Map<BudgetCategory>(BudgetCategory);
+            var categoryToUpdate = Mapper.Map<BudgetCategory>(BudgetCategory);
 
-            if (BudgetCategory.Id == Guid.Empty)
+            _context.Attach(categoryToUpdate).State = EntityState.Modified;
+
+            try
             {
-                _categoryRepository.AddCategory(categoryFromUser);
+                await _context.SaveChangesAsync();
             }
-            else
+            catch (DbUpdateConcurrencyException)
             {
-                _categoryRepository.UpdateCategory(categoryFromUser);
+                if (!BudgetCategoryExists(BudgetCategory.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            if (!_categoryRepository.SaveChanges())
-            {
-                return RedirectToPage("../Error");
-            }
+            return RedirectToPage("./Index");
+        }
 
-            TempData["Message"] = "The category was saved.";
-
-            return RedirectToPage("./Detail", new { categoryId = BudgetCategory.Id });
+        private bool BudgetCategoryExists(Guid id)
+        {
+            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }

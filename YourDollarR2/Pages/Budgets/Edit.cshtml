@@ -4,7 +4,14 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Editing: @Model.Budget.ShortName</h1>
+@if (Model.Budget.Id == Guid.Empty)
+{
+    <h1>New Budget</h1>
+}
+else
+{
+    <h1>Editing: @Model.Budget.ShortName</h1>
+}
 
 <form method="post">
     <input type="hidden" asp-for="Budget.Id" />
@@ -30,19 +37,19 @@
     </div>
     <div class="form-group">
         <label asp-for="Budget.Funds"></label>
-        <input asp-for="Budget.Funds" class="form-control"/>
+        <input asp-for="Budget.Funds" class="form-control" />
         <span class="text-danger" asp-validation-for="Budget.Funds"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Budget.Expenses"></label>
-        <select asp-for="ReturnedExpenseIds" class="form-control"
+        <select asp-for="ReturnedExpenseIds" class="form-control" id="expenses-select"
                 asp-items="@(new SelectList(Model.Expenses, "Id", "ShortName"))"></select>
-        <a asp-page="..\BudgetCategories\Edit" class="btn-outline-info btn-sm">
+    </div>
+    <div class="form-group">
+        <a asp-page="..\Expenses\Edit" class="btn-outline-info btn">
             <i class="oi oi-plus"></i>
-            Add a new category
+            Add a new Expense
         </a>
     </div>
-
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
 
@@ -51,10 +58,16 @@
     <environment include="Development">
         <script src="~/node_modules/gijgo/js/gijgo.min.js"></script>
         <link href="~/node_modules/gijgo/css/gijgo.min.css" rel="stylesheet" />
+
+        <script src="~/node_modules/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+        <link href="~/node_modules/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
         <script src="~/node_modules/gijgo/js/gijgo.min.js"></script>
         <link href="~/node_modules/gijgo/css/gijgo.min.css" rel="stylesheet" />
+
+        <script src="~/node_modules/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+        <link href="~/node_modules/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" rel="stylesheet" />
     </environment>
 
     <script>
@@ -66,6 +79,19 @@
         $(function () {
             $('#CycleEndDate').datepicker({
                 uiLibrary: 'bootstrap4'
+            });
+        });
+
+        // Multi-select plugin
+        $(document).ready(function () {
+            $('#expenses-select').multiselect({
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                maxHeight: 400,
+                buttonClass: 'btn btn-outline-info',
+                nonSelectedText: 'Add your bills',
+                numberDisplayed: 10,
+                includeSelectAllOption: true
             });
         });
     </script>

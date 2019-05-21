@@ -2,14 +2,12 @@
 @using YourDollarR2.Core.Services
 @model FundsInCategory
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2">
-            @Model.Category
-        </div>
-        <div class="col-md-4">
-            @Model.TotalFunds.ToString("C")
-        </div>
-        <div class="col-*-*"></div>
+<div class="row">
+    <div class="col-md-2">
+        @Model.Category
     </div>
+    <div class="col-md-4">
+        @Model.TotalFunds.ToString("C")
+    </div>
+    <div class="col-*-*"></div>
 </div>

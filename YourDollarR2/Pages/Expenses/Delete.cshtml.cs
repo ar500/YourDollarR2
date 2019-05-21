@@ -13,7 +13,8 @@ namespace YourDollarR2.Pages.Expenses
 
         public ExpenseDto Expense { get; set; }
 
-        [TempData] public string Message { get; set; }
+        [TempData]
+        public string Message { get; set; }
 
         public DeleteModel(IExpenseRepository expenseRepository)
         {

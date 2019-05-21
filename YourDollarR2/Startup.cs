@@ -44,12 +44,15 @@ namespace YourDollarR2
             services.AddHttpContextAccessor();
 
             services.AddSingleton<IBudgetRepository, InMemoryBudgetRepository>();
-            services.AddSingleton<IBudgetCategoryRepository, InMemoryCategoryRepository>();
+            services.AddTransient<IBudgetCategoryRepository, DbCategoryRepository>();
             services.AddSingleton<IExpenseRepository, InMemoryExpenseRepository>();
 
             services.AddTransient<IFundsInCategoryService, FundsInCategoryService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDbContext<YourDollarContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("YourDollarApp")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

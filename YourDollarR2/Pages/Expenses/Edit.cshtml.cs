@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using AutoMapper;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using YourDollarR2.Core;
 using YourDollarR2.DataAccess.Repositories;
 using YourDollarR2.Dtos;
@@ -62,13 +65,11 @@ namespace YourDollarR2.Pages.Expenses
                 return Page();
             }
 
-            
-            
             var expenseFromUser = Mapper.Map<Expense>(Expense);
 
             if (Expense.Id == Guid.Empty)
             {
-                var category = _budgetCategoryRepository.GetCategoryById(ReturnedCategoryId);
+                var category = _budgetCategoryRepository.GetCategoryById(ReturnedCategoryId).Result;
                 if (category != null)
                 {
                     expenseFromUser.BudgetCategory = category;
@@ -78,7 +79,7 @@ namespace YourDollarR2.Pages.Expenses
             }
             else
             {
-                var category = _budgetCategoryRepository.GetCategoryById(ReturnedCategoryId);
+                var category = _budgetCategoryRepository.GetCategoryById(ReturnedCategoryId).Result;
                 if (category != null)
                 {
                     expenseFromUser.BudgetCategory = category;

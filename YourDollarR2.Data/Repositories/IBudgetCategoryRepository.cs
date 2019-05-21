@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YourDollarR2.Core;
 
 namespace YourDollarR2.DataAccess.Repositories
@@ -7,10 +8,10 @@ namespace YourDollarR2.DataAccess.Repositories
     public interface IBudgetCategoryRepository
     {
         IEnumerable<BudgetCategory> GetCategoriesByName(string shortName = null);
-        BudgetCategory GetCategoryById(Guid categoryId);
+        Task<BudgetCategory> GetCategoryById(Guid categoryId);
         BudgetCategory UpdateCategory(BudgetCategory category);
-        BudgetCategory AddCategory(BudgetCategory category);
-        BudgetCategory DeleteCategory(Guid categoryId);
-        bool SaveChanges();
+        Task<BudgetCategory> AddCategory(BudgetCategory category);
+        Task<BudgetCategory> DeleteCategory(Guid categoryId);
+        Task<bool> SaveChanges();
     }
 }

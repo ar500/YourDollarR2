@@ -1,0 +1,59 @@
+﻿@page
+@model YourDollarR2.Pages.BudgetsR2.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Budget</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Budget.ShortName" class="control-label"></label>
+                <input asp-for="Budget.ShortName" class="form-control" />
+                <span asp-validation-for="Budget.ShortName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Budget.Description" class="control-label"></label>
+                <input asp-for="Budget.Description" class="form-control" />
+                <span asp-validation-for="Budget.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Budget.CycleStartDate" class="control-label"></label>
+                <input asp-for="Budget.CycleStartDate" class="form-control" />
+                <span asp-validation-for="Budget.CycleStartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Budget.CycleEndDate" class="control-label"></label>
+                <input asp-for="Budget.CycleEndDate" class="form-control" />
+                <span asp-validation-for="Budget.CycleEndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Budget.Funds" class="control-label"></label>
+                <input asp-for="Budget.Funds" class="form-control" />
+                <span asp-validation-for="Budget.Funds" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Budget.OwnerEmail" class="control-label"></label>
+                <input asp-for="Budget.OwnerEmail" class="form-control" />
+                <span asp-validation-for="Budget.OwnerEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

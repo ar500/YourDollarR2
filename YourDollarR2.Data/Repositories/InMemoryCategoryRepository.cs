@@ -5,7 +5,7 @@ using YourDollarR2.Core;
 
 namespace YourDollarR2.DataAccess.Repositories
 {
-    public class InMemoryCategoryRepository : IBudgetCategoryRepository
+    public class InMemoryCategoryRepository
     {
         private readonly List<BudgetCategory> _inMemoryCategories;
         public InMemoryCategoryRepository()

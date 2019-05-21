@@ -32,11 +32,11 @@ namespace YourDollarR2.Pages.Budgets
 
         public IActionResult OnGet(Guid? budgetId)
         {
+            TempData["ReturnUrl"] = HttpContext.Request.Path.ToString();
+
             var expensesFromRepo = _expenseRepository.GetExpensesByName();
 
             Expenses = Mapper.Map<List<ExpenseDto>>(expensesFromRepo);
-
-            Expenses.Insert(0, new ExpenseDto { Id = Guid.NewGuid(), ShortName = "Select your expenses" });
 
             if (budgetId.HasValue)
             {
@@ -90,7 +90,6 @@ namespace YourDollarR2.Pages.Budgets
             TempData["Message"] = "The Budget was saved.";
 
             return RedirectToPage("./Detail", new {budgetId = Budget.Id});
-
         }
     }
 }

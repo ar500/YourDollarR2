@@ -1,54 +1,63 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using YourDollarR2.DataAccess.Repositories;
+using Microsoft.EntityFrameworkCore;
+using YourDollarR2.Core;
+using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
 namespace YourDollarR2.Pages.BudgetCategories
 {
     public class DeleteModel : PageModel
     {
-        private readonly IBudgetCategoryRepository _categoryRepository;
+        private readonly YourDollarContext _context;
 
-        public BudgetCategoryDto BudgetCategory { get; set; }
-
-        [TempData]
-        public string Message { get; set; }
-
-        public DeleteModel(IBudgetCategoryRepository categoryRepository)
+        public DeleteModel(YourDollarContext context)
         {
-            _categoryRepository = categoryRepository;
+            _context = context;
         }
 
-        public IActionResult OnGet(Guid categoryId)
+        [BindProperty]
+        public BudgetCategoryDto BudgetCategory { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            var categoryFromRepo = _categoryRepository.GetCategoryById(categoryId);
-            if (categoryFromRepo == null)
+            if (id == null)
             {
-                return RedirectToPage("./List");
+                return NotFound();
             }
+
+            var categoryFromRepo = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
 
             BudgetCategory = Mapper.Map<BudgetCategoryDto>(categoryFromRepo);
 
+            if (BudgetCategory == null)
+            {
+                return NotFound();
+            }
             return Page();
         }
 
-        public IActionResult OnPost(Guid categoryId)
+        public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            var budgetCategory = _categoryRepository.DeleteCategory(categoryId);
-            if (budgetCategory == null)
+            if (id == null)
             {
-                return RedirectToPage("./List");
+                return NotFound();
             }
 
-            if (!_categoryRepository.SaveChanges())
+            var categoryToDelete = await _context.Categories.FindAsync(id);
+
+            if (categoryToDelete != null)
             {
-                return StatusCode(500, "The server was unable to handle your request.");
+                _context.Categories.Remove(categoryToDelete);
+                await _context.SaveChangesAsync();
             }
 
-            TempData["Message"] = $"{budgetCategory.ShortName} was deleted!";
-            return RedirectToPage("./List");
+            return RedirectToPage("./Index");
         }
     }
 }

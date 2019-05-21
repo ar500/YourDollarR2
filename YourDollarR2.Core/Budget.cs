@@ -36,5 +36,8 @@ namespace YourDollarR2.Core
         public string OwnerEmail { get; set; } = "removethis@soonest.opp";
 
         public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
