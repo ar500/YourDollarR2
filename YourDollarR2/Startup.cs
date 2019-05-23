@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using YourDollarR2.DataAccess;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YourDollarR2.DataAccess.Repositories;
 using YourDollarR2.Dtos;
 using YourDollarR2.Core;
 using YourDollarR2.Core.Services;
@@ -44,6 +43,7 @@ namespace YourDollarR2
             services.AddHttpContextAccessor();
 
             services.AddTransient<IFundsInCategoryService, FundsInCategoryService>();
+            services.AddTransient<ICalculateBudgetFundsService, CalculateBudgetFundsService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -53,7 +53,7 @@ namespace YourDollarR2
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
-            IFundsInCategoryService catService)
+            IFundsInCategoryService catService, ICalculateBudgetFundsService fundsService)
         {
             if (env.IsDevelopment())
             {
@@ -79,7 +79,9 @@ namespace YourDollarR2
             {
                 cfg.CreateMap<BudgetDto, Budget>();
                 cfg.CreateMap<Budget, BudgetDto>()
-                    .BeforeMap((s, d) => d.CategoryGroups = catService.GroupExpensesByCat(s.Expenses));
+                    .BeforeMap((s, d) => d.CategoryGroups = catService.GroupExpensesByCat(s.Expenses))
+                    .BeforeMap((s, d) => d.AllocatedFunds = fundsService.CalculateAllotedFunds(d.CategoryGroups))
+                    .BeforeMap((s, d) => d.UnAllocatedFunds = fundsService.CalculateUnallocateFunds(d.AllocatedFunds, d.AllotedFunds));
                 cfg.CreateMap<BudgetCategoryDto, BudgetCategory>();
                 cfg.CreateMap<BudgetCategory, BudgetCategoryDto>();
                 cfg.CreateMap<BudgetCategoryForSelectListDto, BudgetCategory>();

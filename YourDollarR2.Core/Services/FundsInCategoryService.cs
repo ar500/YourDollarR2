@@ -7,7 +7,7 @@ namespace YourDollarR2.Core.Services
     {
         public IEnumerable<FundsInCategory> GroupExpensesByCat(IEnumerable<Expense> expenses)
         {
-            if (expenses.Count() == 0)
+            if (!expenses.Any() || expenses == null)
             {
                 return null;
             }

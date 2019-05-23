@@ -2,14 +2,12 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using YourDollarR2.DataAccess.Repositories;
 using YourDollarR2.Dtos;
 
 namespace YourDollarR2.Pages.Budgets
 {
     public class ListModel : PageModel
     {
-        private readonly IBudgetRepository _budgetRepository;
 
         public IEnumerable<BudgetDto> Budgets { get; set; }
 
@@ -19,16 +17,13 @@ namespace YourDollarR2.Pages.Budgets
         [TempData]
         public string Message { get; set; }
 
-        public ListModel(IBudgetRepository budgetRepository)
+        public ListModel()
         {
-            _budgetRepository = budgetRepository;
         }
 
         public void OnGet()
         {
-            var budgetsFromRepo = _budgetRepository.GetBudgetsByName(SearchTerm);
 
-            Budgets = Mapper.Map<IEnumerable<BudgetDto>>(budgetsFromRepo);
         }
     }
 }

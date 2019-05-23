@@ -36,9 +36,9 @@ else
         @Html.ValidationMessageFor(model => model.Budget.CycleEndDate, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
-        <label asp-for="Budget.Funds"></label>
-        <input asp-for="Budget.Funds" class="form-control" />
-        <span class="text-danger" asp-validation-for="Budget.Funds"></span>
+        <label asp-for="Budget.AllocatedFunds"></label>
+        <input asp-for="Budget.AllocatedFunds" class="form-control" />
+        <span class="text-danger" asp-validation-for="Budget.AllocatedFunds"></span>
     </div>
     <div class="form-group">
         <select asp-for="ReturnedExpenseIds" class="form-control" id="expenses-select"

@@ -28,10 +28,11 @@ namespace YourDollarR2.Core
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CycleEndDate { get; set; } = DateTime.Now;
 
+        [Required]
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Funds { get; set; } = 0;
-
+        public decimal AllottedFunds { get; set; } = 0;
+                
         [Required]
         [DataType(DataType.EmailAddress)]
         public string OwnerEmail { get; set; } = "removethis@soonest.opp";

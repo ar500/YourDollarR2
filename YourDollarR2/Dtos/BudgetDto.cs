@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using YourDollarR2.Core.Services;
+using YourDollarR2.Core.Validators;
 
 namespace YourDollarR2.Dtos
 {
@@ -27,8 +28,16 @@ namespace YourDollarR2.Dtos
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CycleEndDate { get; set; } = DateTime.Now.AddDays(5);
 
+        [Required]
         [DataType(DataType.Currency)]
-        public decimal Funds { get; set; } = 0;
+        public decimal AllotedFunds { get; set; } = 0;
+
+        [DataType(DataType.Currency)]
+        [ValidFundAllocation]
+        public decimal AllocatedFunds { get; set; } = 0;
+
+        [DataType(DataType.Currency)]
+        public decimal UnAllocatedFunds { get; set; } = 0;
 
         [DataType(DataType.EmailAddress)]
         public string OwnerEmail { get; set; } = "removethis@soonest.opp";
@@ -36,5 +45,6 @@ namespace YourDollarR2.Dtos
         public ICollection<ExpenseDto> Expenses { get; set; } = new List<ExpenseDto>();
 
         public IEnumerable<FundsInCategory> CategoryGroups { get; set; }
+        
     }
 }
