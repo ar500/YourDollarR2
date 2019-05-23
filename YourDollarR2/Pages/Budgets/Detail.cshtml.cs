@@ -3,7 +3,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using YourDollarR2.Core.Services;
 using YourDollarR2.DataAccess.Repositories;
 using YourDollarR2.Dtos;
 

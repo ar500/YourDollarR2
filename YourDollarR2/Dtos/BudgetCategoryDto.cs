@@ -14,5 +14,7 @@ namespace YourDollarR2.Dtos
         [Required]
         [MaxLength(200)]
         public string Description { get; set; }
+
+        public byte[] RowVersion { get; set; }
     }
 }

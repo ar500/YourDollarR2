@@ -1,0 +1,17 @@
+﻿@page
+@model BudgetCategoryDto
+
+<div class="modal-body">
+    <div class="card card-default mb-3" style="width: 18rem;">
+        <div class="card-body">
+            <h3 class="card-title">@Html.DisplayFor(m => m.ShortName)</h3>
+            <span class="list-group-item">@Html.DisplayFor(m => m.Description)</span>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-lg" data-dismiss="modal" data-target="#createModal">
+                <i class="oi oi-circle-x"></i>
+            </a>
+        </div>
+    </div>
+</div>
+

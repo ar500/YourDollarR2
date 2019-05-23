@@ -1,59 +1,8 @@
-﻿@page "{expenseId:guid?}"
-@using YourDollarR2.Dtos
+﻿@page
 @model YourDollarR2.Pages.Expenses.EditModel
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "EditTwo";
 }
 
-@if (Model.Expense.Id == Guid.Empty)
-{
-    <h1>New Expense</h1>
-}
-else
-{
-    <h1>Editing: @Model.Expense.ShortName</h1>
-}
+<h1>EditTwo</h1>
 
-<form method="post">
-    <input type="hidden" asp-for="Expense.Id"/>
-    <div class="form-group">
-        <label asp-for="Expense.ShortName"></label>
-        <input asp-for="Expense.ShortName" class="form-control"/>
-        <span class="text-danger" asp-validation-for="Expense.ShortName"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Expense.BudgetCategory"></label>
-        <select asp-for="ReturnedCategoryId" class="form-control"
-                asp-items="@(new SelectList(Model.Categories, "Id", "ShortName"))"></select>
-        <a asp-page="..\BudgetCategories\Edit" class="btn-outline-info btn-sm">
-            <i class="oi oi-plus"></i>
-            Add a new category
-        </a>
-    </div>
-    <div class="form-group">
-        <label asp-for="Expense.Description"></label>
-        <input asp-for="Expense.Description" class="form-control"/>
-        <span class="text-danger" asp-validation-for="Expense.Description"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Expense.PayoutAmount"></label>
-        <input asp-for="Expense.PayoutAmount" class="form-control"/>
-        <span class="text-danger" asp-validation-for="Expense.PayoutAmount"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Expense.CompanyName"></label>
-        <input asp-for="Expense.CompanyName" class="form-control"/>
-        <span class="text-danger" asp-validation-for="Expense.CompanyName"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Expense.PayoutAccountNumber"></label>
-        <input asp-for="Expense.PayoutAccountNumber" class="form-control"/>
-        <span class="text-danger" asp-validation-for="Expense.PayoutAccountNumber"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
-
-@section Scripts
-{
-    <partial name="_ValidationScriptsPartial" />
-}

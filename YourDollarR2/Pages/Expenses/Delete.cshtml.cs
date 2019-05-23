@@ -1,54 +1,69 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using YourDollarR2.DataAccess.Repositories;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
 namespace YourDollarR2.Pages.Expenses
 {
     public class DeleteModel : PageModel
     {
-        private readonly IExpenseRepository _expenseRepository;
+        private readonly YourDollarContext _context;
 
+        public DeleteModel(YourDollarContext context)
+        {
+            _context = context;
+        }
+
+        [BindProperty]
         public ExpenseDto Expense { get; set; }
 
-        [TempData]
-        public string Message { get; set; }
-
-        public DeleteModel(IExpenseRepository expenseRepository)
+        public IActionResult OnGet()
         {
-            _expenseRepository = expenseRepository;
+            return NotFound();
         }
 
-        public IActionResult OnGet(Guid expenseId)
+        public async Task<IActionResult> OnGetDeletePartialAsync(Guid? id)
         {
-            var expenseFromRepo = _expenseRepository.GetExpenseById(expenseId);
-            if (expenseFromRepo == null)
+            if (id.HasValue)
             {
-                return RedirectToPage("./List");
+                var expenseFromRepo = await _context.Expenses.FindAsync(id);
+                Expense = Mapper.Map<ExpenseDto>(expenseFromRepo);
+
+                if (Expense != null)
+                {
+                    return new PartialViewResult
+                    {
+                        ViewName = "_DeletePartial",
+                        ViewData = new ViewDataDictionary<ExpenseDto>(ViewData, Expense)
+                    };
+                }
             }
 
-            Expense = Mapper.Map<ExpenseDto>(expenseFromRepo);
-
-            return Page();
+            return BadRequest();
         }
 
-        public IActionResult OnPost(Guid expenseId)
+        public async Task<IActionResult> OnPostAsync(Guid? id)
         {
-            var expense = _expenseRepository.DeleteExpense(expenseId);
-            if (expense == null)
+            if (id == null)
             {
-                return RedirectToPage("./List");
+                return NotFound();
             }
 
-            if (!_expenseRepository.SaveChanges())
+            var expenseToRemove = await _context.Expenses.FindAsync(id);
+
+            if (expenseToRemove != null)
             {
-                return StatusCode(500, "The server was unable to handle your request.");
+                _context.Expenses.Remove(expenseToRemove);
+                await _context.SaveChangesAsync();
             }
 
-            TempData["Message"] = $"{expense.ShortName} was deleted!";
-            return RedirectToPage("./List");
+            return RedirectToPage("./Index");
         }
     }
 }

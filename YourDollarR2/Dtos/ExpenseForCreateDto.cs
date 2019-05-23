@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace YourDollarR2.Dtos
 {
-    public class ExpenseDtoForCreateDto
+    public class ExpenseForCreateDto
     {
+        public Guid Id { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string ShortName { get; set; }
@@ -29,8 +30,10 @@ namespace YourDollarR2.Dtos
         [Required]
         public Guid ReturnedCategoryId { get; set; }
 
-        public IList<BudgetCategoryDto> Categories { get; set; }
+        public IList<SelectListItem> Categories { get; set; }
 
         public BudgetCategoryDto BudgetCategory { get; set; }
+
+        public byte[] RowVersion { get; set; }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using AutoMapper;
-using YourDollarR2.Core;
 using YourDollarR2.Core.Services;
 
 namespace YourDollarR2.Dtos

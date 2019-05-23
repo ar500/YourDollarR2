@@ -1,100 +1,137 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore;
 using YourDollarR2.Core;
-using YourDollarR2.DataAccess.Repositories;
+using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
 namespace YourDollarR2.Pages.Expenses
 {
     public class EditModel : PageModel
     {
-        private readonly IExpenseRepository _expenseRepository;
-        private readonly IBudgetCategoryRepository _budgetCategoryRepository;
+        private readonly YourDollarContext _context;
 
-        [BindProperty]
-        public ExpenseDto Expense { get; set; }
-
-        [BindProperty]
-        public List<BudgetCategoryDto> Categories { get; set; }
-
-        [BindProperty]
-        public Guid ReturnedCategoryId { get; set; }
-
-        public EditModel(IExpenseRepository expenseRepository, IBudgetCategoryRepository budgetCategoryRepository)
+        public EditModel(YourDollarContext context)
         {
-            _expenseRepository = expenseRepository;
-            _budgetCategoryRepository = budgetCategoryRepository;
+            _context = context;
         }
 
-        public IActionResult OnGet(Guid? expenseId)
+        [BindProperty]
+        public ExpenseForCreateDto Expense { get; set; }
+      
+        public async Task<IActionResult> OnGetLoadEditPartialAsync(Guid? id)
         {
-            var categoriesFromRepo = _budgetCategoryRepository.GetCategoriesByName();
-
-            Categories = Mapper.Map<List<BudgetCategoryDto>>(categoriesFromRepo);
-
-            Categories.Insert(0, new BudgetCategoryDto {Id = Guid.NewGuid(), ShortName = "Select a Category"});
-
-            if (expenseId.HasValue)
+            if (!id.HasValue)
             {
-                var expenseFromRepo = _expenseRepository.GetExpenseById(expenseId.Value);
-                Expense = Mapper.Map<ExpenseDto>(expenseFromRepo);
+                return NotFound();
             }
-            else
+
+            if (!ExpenseExists(id.Value))
             {
-                Expense = new ExpenseDto();
+                return NotFound();
             }
+
+            var expenseFromRepo = await _context.Expenses
+                .Include(c => c.BudgetCategory)
+                .FirstOrDefaultAsync(m => m.Id == id.Value);
+
+            if (expenseFromRepo == null)
+            {
+                return BadRequest();
+            }
+
+            Expense = Mapper.Map<ExpenseForCreateDto>(expenseFromRepo);
+
+            await PopulateCategories();
 
             if (Expense == null)
             {
-                return RedirectToPage("../Error");
+                return BadRequest();
             }
 
-            return Page();
+            //return Partial("_EditPartial");
+
+            return new PartialViewResult
+            {
+                ViewName = "_EditPartial",
+                ViewData = new ViewDataDictionary<ExpenseForCreateDto>(ViewData, Expense)
+            };
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                return RedirectToPage("./Index");
+            }
+
+            var chosenCategory = await _context.Categories.FindAsync(Expense.ReturnedCategoryId);
+            if(chosenCategory == null)
+            {
+                return BadRequest();
             }
 
             var expenseFromUser = Mapper.Map<Expense>(Expense);
 
-            if (Expense.Id == Guid.Empty)
+            expenseFromUser.BudgetCategory = chosenCategory;
+
+            _context.Attach(expenseFromUser).State = EntityState.Modified;
+
+            try
             {
-                var category = _budgetCategoryRepository.GetCategoryById(ReturnedCategoryId).Result;
-                if (category != null)
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ExpenseExists(Expense.Id))
                 {
-                    expenseFromUser.BudgetCategory = category;
+                    return NotFound();
                 }
-
-                _expenseRepository.AddExpense(expenseFromUser);
-            }
-            else
-            {
-                var category = _budgetCategoryRepository.GetCategoryById(ReturnedCategoryId).Result;
-                if (category != null)
+                else
                 {
-                    expenseFromUser.BudgetCategory = category;
+                    throw;
                 }
-                _expenseRepository.UpdateExpense(expenseFromUser);
             }
 
-            if (!_expenseRepository.SaveChanges())
+            return RedirectToPage("./Index");
+        }
+
+        private bool ExpenseExists(Guid id)
+        {
+            return _context.Expenses.Any(e => e.Id == id);
+        }
+
+        private async Task PopulateCategories()
+        {
+            Expense.Categories = new List<SelectListItem>
             {
-                return RedirectToPage("../Error");
+                new SelectListItem
+                {
+                    Value = Expense.BudgetCategory.Id.ToString(),
+                    Text = Expense.BudgetCategory.ShortName,
+                    Selected = true
+                }
+            };
+            
+            var categoriesFromRepo = await _context.Categories
+                .Where(c => c.Id != Expense.BudgetCategory.Id)
+                .ToListAsync();
+
+            foreach(var category in categoriesFromRepo)
+            {
+                Expense.Categories.Add(new SelectListItem
+                {
+                    Value = category.Id.ToString(),
+                    Text = category.ShortName
+                });
             }
-
-            TempData["Message"] = "The Expense was saved.";
-
-            return RedirectToPage("./Detail", new { expenseId = Expense.Id });
         }
     }
 }

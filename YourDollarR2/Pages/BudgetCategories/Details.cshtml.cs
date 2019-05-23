@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
-using YourDollarR2.Core;
+using Microsoft.Extensions.Logging;
 using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
@@ -14,31 +15,38 @@ namespace YourDollarR2.Pages.BudgetCategories
 {
     public class DetailsModel : PageModel
     {
-        private readonly YourDollarR2.DataAccess.YourDollarContext _context;
+        private readonly YourDollarContext _context;
+        private readonly ILogger _logger;
 
-        public DetailsModel(YourDollarR2.DataAccess.YourDollarContext context)
+        public DetailsModel(YourDollarContext context, ILogger<DetailsModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        public BudgetCategoryDto BudgetCategory { get; set; }
-
-        public async Task<IActionResult> OnGetAsync(Guid? id)
+        public BudgetCategoryDto BudgetCategory { get; set; } = new BudgetCategoryDto();
+        
+        public async Task<IActionResult> OnGetLoadDetailsPartial(Guid? id)
         {
-            if (id == null)
+            Debug.WriteLine(id.Value);
+            if (!id.HasValue)
             {
-                return NotFound();
+                return null;
             }
 
-            var categoryFromRepo = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
-
-            BudgetCategory = Mapper.Map<BudgetCategoryDto>(categoryFromRepo);
-
-            if (BudgetCategory == null)
+            var categoryFromRepo = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id.Value);
+            if (categoryFromRepo != null)
             {
-                return NotFound();
+                BudgetCategory = Mapper.Map<BudgetCategoryDto>(categoryFromRepo);
+
+                return new PartialViewResult
+                {
+                    ViewName = "_DetailsPartial",
+                    ViewData = new ViewDataDictionary<BudgetCategoryDto>(ViewData, BudgetCategory)
+                };
             }
-            return Page();
+
+            return null;
         }
     }
 }

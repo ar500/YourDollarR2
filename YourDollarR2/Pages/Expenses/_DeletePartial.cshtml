@@ -1,0 +1,13 @@
+﻿@model ExpenseDto
+<div class="modal-body">
+    <h1 class="text-capitalize">Delete Expense?</h1>
+    <hr />
+    <h4 class="text text-danger">Are you sure that you want to delete @Model.ShortName?</h4>
+    <form method="post" asp-page="/Expenses/Delete" id="deleteExpense">
+        <input type="hidden" asp-for="@Model.Id" />
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-danger" form="deleteExpense">Delete</button>
+</div>

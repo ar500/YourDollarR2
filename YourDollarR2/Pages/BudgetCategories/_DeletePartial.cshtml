@@ -1,0 +1,15 @@
+﻿@model BudgetCategoryDto
+    <div class="modal-body">
+        <h1 class="text-capitalize">Delete Category</h1>
+        <hr />
+        <h4 class="text text-danger">Are you sure that you want to delete the @Model.ShortName?</h4>
+        <span class="text text-info">Deleting this category will also delete all Expenses that are assigned to this category.</span>
+        <form method="post" asp-page="/BudgetCategories/Delete" id="deleteCategory">
+            <input type="hidden" asp-for="@Model.Id" />
+        </form>
+    </div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-danger" form="deleteCategory">Delete</button>
+</div>
+

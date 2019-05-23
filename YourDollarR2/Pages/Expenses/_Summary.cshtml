@@ -6,7 +6,7 @@
     <div class="card-body">
         <h3 class="card-title">@Model.ShortName</h3>
         <h6 class="card-subtitle mb-2 text-muted">
-            <a class="btn btn-sm btn-outline-info" asp-page=".\Edit" asp-route-expenseId="@Model.Id">
+            <a class="btn btn-sm btn-outline-info">
                 @Model.BudgetCategory.ShortName
             </a>
         </h6>
@@ -14,16 +14,19 @@
        
     </div>
     <div class="card-footer">
-        <a class="btn btn-lg" asp-page="Details"
-           asp-route-expenseId="@Model.Id">
+        <a class="btn btn-lg details_button"
+           data-id="@Model.Id" data-toggle="modal" data-target="#createModal"
+           id="detailsButton_@(Model.Id)">
             <i class="oi oi-zoom-in"></i>
         </a>
-        <a class="btn btn-lg" asp-page="Edit"
-           asp-route-expenseId="@Model.Id">
+        <a class="btn btn-lg edit_button"
+           data-id="@Model.Id" data-toggle="modal" data-target="#createModal"
+           id="editButton_@(Model.Id)">
             <i class="oi oi-brush"></i>
         </a>
-        <a class="btn btn-lg" asp-page="Delete"
-           asp-route-expenseId="@Model.Id">
+        <a class="btn btn-lg delete_button"
+           data-id="@Model.Id" data-toggle="modal" data-target="#createModal"
+           id="deleteButton_@(Model.Id)">
             <i class="oi oi-trash"></i>
         </a>
     </div>

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using YourDollarR2.Core;
 using YourDollarR2.DataAccess;
-using YourDollarR2.DataAccess.Repositories;
 using YourDollarR2.Dtos;
 
 namespace YourDollarR2.Pages.BudgetCategories
@@ -33,7 +29,6 @@ namespace YourDollarR2.Pages.BudgetCategories
             _context = context;
         }
 
-
         public async Task OnGetAsync()
         {
 
@@ -44,6 +39,11 @@ namespace YourDollarR2.Pages.BudgetCategories
                 select c;
 
             BudgetCategories = Mapper.Map<IList<BudgetCategoryDto>>(filteredCategories);
+        }
+
+        public PartialViewResult OnGetCreateNewPartial()
+        {
+            return Partial("_CreatePartial");
         }
     }
 }

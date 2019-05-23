@@ -1,8 +1,9 @@
 ﻿@model BudgetCategoryDto
-
 <div class="modal-body">
-    <form method="post" asp-page="/BudgetCategories/Create" id="createCategory">
+    <form method="post" asp-page="/BudgetCategories/Edit" id="editCategory">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="@Model.Id" />
+        <input type="hidden" asp-for="@Model.RowVersion" />
         <div class="form-group">
             <label asp-for="@Model.ShortName" class="control-label"></label>
             <input asp-for="@Model.ShortName" class="form-control" />
@@ -17,7 +18,7 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-primary" form="createCategory">Create</button>
+    <button type="submit" class="btn btn-primary" form="editCategory">Edit</button>
 </div>
 
 @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }

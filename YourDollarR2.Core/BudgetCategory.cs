@@ -21,6 +21,7 @@ namespace YourDollarR2.Core
 
         public ICollection<Expense> Expenses { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Timestamp]
         public byte[] RowVersion { get; set; }
     }

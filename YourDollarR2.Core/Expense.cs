@@ -19,7 +19,8 @@ namespace YourDollarR2.Core
         public string Description { get; set; }
 
         [Required]
-        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = false)]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal PayoutAmount { get; set; }
 
         [MaxLength(50)]

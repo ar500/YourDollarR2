@@ -35,7 +35,7 @@
     </div>
     <div class="row">
         <div class="col-auto">
-            <a asp-page="Create" class="badge badge-primary" data-toggle="modal" data-target="#createModal">
+            <a asp-page="Create" class="badge badge-primary" data-toggle="modal" data-target="#createModal" id="createButton">
                 <i class="oi oi-plus"></i> Create Category
             </a>
         </div>
@@ -45,9 +45,7 @@
             <div class="card-deck">
                 @foreach (var category in Model.BudgetCategories)
                 {
-                    <div class="col-4">
-                        <partial name="_Summary" model="category" />
-                    </div>
+                    <partial name="_Summary" model="category" />
                 }
             </div>
         </div>
@@ -55,7 +53,10 @@
 </div>
 
 @section Modals{
-    <div id="modalSection">
-        <partial name="_CreatePartial" model="Model.BudgetCategory"/>
-    </div>
+    <div id="modalSection"></div>
+}
+
+@section Scripts
+{
+    <script type="text/javascript" src="~/js/BudgetCategories.js"></script>
 }

@@ -29,6 +29,7 @@ namespace YourDollarR2.Core
         public DateTime CycleEndDate { get; set; } = DateTime.Now;
 
         [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Funds { get; set; } = 0;
 
         [Required]
