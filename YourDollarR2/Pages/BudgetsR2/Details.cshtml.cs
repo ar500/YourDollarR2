@@ -1,37 +1,55 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
-using YourDollarR2.Core;
+using YourDollarR2.DataAccess;
+using YourDollarR2.Dtos;
 
 namespace YourDollarR2.Pages.BudgetsR2
 {
     public class DetailsModel : PageModel
     {
-        private readonly YourDollarR2.DataAccess.YourDollarContext _context;
+        private readonly YourDollarContext _context;
 
-        public DetailsModel(YourDollarR2.DataAccess.YourDollarContext context)
+        public DetailsModel(YourDollarContext context)
         {
             _context = context;
         }
 
-        public Budget Budget { get; set; }
+        public BudgetDto Budget { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(Guid? id)
+        public IActionResult OnGetAsync()
         {
-            if (id == null)
+            return NotFound();
+        }
+
+        public async Task<IActionResult> OnGetLoadDetailsPartialAsync(Guid? id)
+        {
+            if (!id.HasValue)
             {
                 return NotFound();
             }
 
-            Budget = await _context.Budgets.FirstOrDefaultAsync(m => m.Id == id);
+            var budgetFromRepo = await _context.Budgets
+                .Include(b => b.Expenses)
+                .ThenInclude(e => e.BudgetCategory)
+                .FirstOrDefaultAsync(b => b.Id == id.Value);
 
-            if (Budget == null)
+            if(budgetFromRepo == null)
             {
                 return NotFound();
             }
-            return Page();
+
+            Budget = Mapper.Map<BudgetDto>(budgetFromRepo);
+
+            return new PartialViewResult
+            {
+                ViewName = "_DetailsPartial",
+                ViewData = new ViewDataDictionary<BudgetDto>(ViewData, Budget)
+            };
         }
     }
 }

@@ -12,7 +12,7 @@ namespace YourDollarR2.Core.Validators
         {
             var budgetDto = (BudgetDto)validationContext.ObjectInstance;
             var allocatedFunds = ((decimal)value);
-            var allotedFunds = budgetDto.AllotedFunds;
+            var allotedFunds = budgetDto.AllottedFunds;
 
             if(allotedFunds < allocatedFunds)
             {

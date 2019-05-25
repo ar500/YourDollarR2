@@ -12,7 +12,7 @@ namespace YourDollarR2.Core.Services
                 return null;
             }
 
-            return expenses
+            var groupedCategories = expenses
                 .GroupBy(e => e.BudgetCategory)
                 .Where(g => g.Key != null)
                 .Select(g => new FundsInCategory
@@ -20,6 +20,8 @@ namespace YourDollarR2.Core.Services
                     Category = g.FirstOrDefault().BudgetCategory.ShortName,
                     TotalFunds = g.Sum(e => e.PayoutAmount)
                 }).ToList();
+
+            return groupedCategories;
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TrackableEntities.Common.Core;
 
 namespace YourDollarR2.Core
 {
@@ -32,6 +34,7 @@ namespace YourDollarR2.Core
         [Required]
         public BudgetCategory BudgetCategory { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Timestamp]
         public byte[] RowVersion { get; set; }
     }

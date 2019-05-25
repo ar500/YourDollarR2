@@ -78,18 +78,31 @@ namespace YourDollarR2
             AutoMapper.Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<BudgetDto, Budget>();
-                cfg.CreateMap<Budget, BudgetDto>()
-                    .BeforeMap((s, d) => d.CategoryGroups = catService.GroupExpensesByCat(s.Expenses))
-                    .BeforeMap((s, d) => d.AllocatedFunds = fundsService.CalculateAllotedFunds(d.CategoryGroups))
-                    .BeforeMap((s, d) => d.UnAllocatedFunds = fundsService.CalculateUnallocateFunds(d.AllocatedFunds, d.AllotedFunds));
-                cfg.CreateMap<BudgetCategoryDto, BudgetCategory>();
-                cfg.CreateMap<BudgetCategory, BudgetCategoryDto>();
-                cfg.CreateMap<BudgetCategoryForSelectListDto, BudgetCategory>();
-                cfg.CreateMap<ExpenseDto, Expense>();
-                cfg.CreateMap<Expense, ExpenseDto>();
-                cfg.CreateMap<ExpenseForCreateDto, Expense>();
-                cfg.CreateMap<Expense, ExpenseForCreateDto>();
 
+                cfg.CreateMap<BudgetDto, Budget>().ReverseMap()
+                    .BeforeMap((s, d) => d.UnAllocatedFunds = fundsService.CalculateUnallocateFunds(d.AllocatedFunds, s.AllottedFunds))
+                    .BeforeMap((s, d) => d.AllocatedFunds = fundsService.CalculateAllocatedFunds(d.CategoryGroups))
+                    .BeforeMap((s, d) => d.CategoryGroups = catService.GroupExpensesByCat(s.Expenses));
+
+                cfg.CreateMap<BudgetForCreateOrEditDto, Budget>();
+
+                cfg.CreateMap<BudgetForCreateOrEditDto, Budget>().ReverseMap();
+
+                cfg.CreateMap<BudgetCategoryDto, BudgetCategory>();
+
+                cfg.CreateMap<BudgetCategoryDto, BudgetCategory>().ReverseMap();
+
+                cfg.CreateMap<BudgetCategoryForSelectListDto, BudgetCategory>();
+
+                cfg.CreateMap<BudgetCategoryForSelectListDto, BudgetCategory>().ReverseMap();
+
+                cfg.CreateMap<ExpenseDto, Expense>();
+
+                cfg.CreateMap<ExpenseDto, Expense>().ReverseMap();
+
+                cfg.CreateMap<ExpenseForCreateDto, Expense>();
+
+                cfg.CreateMap<ExpenseForCreateDto, Expense>().ReverseMap();
             });
 
             app.UseMvc();

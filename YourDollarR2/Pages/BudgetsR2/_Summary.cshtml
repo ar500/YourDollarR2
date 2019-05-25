@@ -1,1 +1,31 @@
-﻿@model  BudgetDto
+﻿@model BudgetDto
+
+<div class="card card-default mb-5" style="width: 20rem;">
+    <div class="card-body">
+        <h3 class="card-title">@Model.ShortName</h3>
+        <h6 class="card-subtitle mb-2 text-muted">
+            @Model.CycleStartDate - @Model.CycleEndDate
+        </h6>
+        <span class="list-group-item">Description: @Model.Description</span>
+        <span class="list-group-item">Allotted Funds: @Model.AllottedFunds</span>
+        <span class="list-group-item">Allocated Funds: @Model.AllocatedFunds</span>
+        <span class="list-group-item">Funds Remaining: @Model.UnAllocatedFunds</span>
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-lg details_button"
+           data-id="@Model.Id" data-toggle="modal" data-target="#createModal"
+           id="detailsButton_@(Model.Id)">
+            <i class="oi oi-zoom-in"></i>
+        </a>
+        <a class="btn btn-lg edit_button"
+           data-id="@Model.Id" data-toggle="modal" data-target="#createModal"
+           id="editButton_@(Model.Id)">
+            <i class="oi oi-brush"></i>
+        </a>
+        <a class="btn btn-lg delete_button"
+           data-id="@Model.Id" data-toggle="modal" data-target="#createModal"
+           id="deleteButton_@(Model.Id)">
+            <i class="oi oi-trash"></i>
+        </a>
+    </div>
+</div>

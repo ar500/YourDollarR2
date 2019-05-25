@@ -7,9 +7,14 @@ namespace YourDollarR2.Core.Services
 {
     public class CalculateBudgetFundsService : ICalculateBudgetFundsService
     {
-        public decimal CalculateAllotedFunds(IEnumerable<FundsInCategory> categoryGroups)
+        public decimal CalculateAllocatedFunds(IEnumerable<FundsInCategory> categoryGroups)
         {
-            if (!categoryGroups.Any() || categoryGroups == null)
+            if(categoryGroups == null)
+            {
+                return 0; 
+            }
+
+            if (!categoryGroups.Any())
             {
                 return 0;
             }
@@ -19,15 +24,14 @@ namespace YourDollarR2.Core.Services
                    .Sum();
         }
 
-        public decimal CalculateUnallocateFunds(decimal allocatedFunds, decimal allotedFunds)
+        public decimal CalculateUnallocateFunds(decimal allocatedFunds, decimal allottedFunds)
         {
-            
-            if(allotedFunds >= allocatedFunds)
+            if(allottedFunds <= allocatedFunds)
             {
                 return 0;
             }
-
-            return allotedFunds - allocatedFunds;
+           
+            return (allottedFunds - allocatedFunds);
         }
     }
 }

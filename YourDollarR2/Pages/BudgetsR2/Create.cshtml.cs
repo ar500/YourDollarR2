@@ -1,15 +1,20 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using YourDollarR2.Core;
+using YourDollarR2.DataAccess;
+using YourDollarR2.Dtos;
 
 namespace YourDollarR2.Pages.BudgetsR2
 {
     public class CreateModel : PageModel
     {
-        private readonly YourDollarR2.DataAccess.YourDollarContext _context;
+        private readonly YourDollarContext _context;
 
-        public CreateModel(YourDollarR2.DataAccess.YourDollarContext context)
+        public CreateModel(YourDollarContext context)
         {
             _context = context;
         }
@@ -20,16 +25,23 @@ namespace YourDollarR2.Pages.BudgetsR2
         }
 
         [BindProperty]
-        public Budget Budget { get; set; }
+        public BudgetForCreateOrEditDto Budget { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                return BadRequest(ModelState);
             }
 
-            _context.Budgets.Add(Budget);
+            var expensesFromUser = _context.Expenses
+                .Where(e => Budget.ReturnedExpenseIds.Contains(e.Id))
+                .ToList();
+
+            var budgetToCreate = Mapper.Map<Budget>(Budget);
+            budgetToCreate.Expenses = expensesFromUser;
+
+            _context.Budgets.Add(budgetToCreate);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

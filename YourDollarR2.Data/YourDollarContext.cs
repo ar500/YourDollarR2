@@ -16,6 +16,6 @@ namespace YourDollarR2.DataAccess
         : base(options)
         {
         }
-
+                
     }
 }

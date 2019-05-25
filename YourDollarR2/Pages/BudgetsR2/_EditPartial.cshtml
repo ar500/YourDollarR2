@@ -1,0 +1,62 @@
+﻿@model BudgetForCreateOrEditDto
+
+<div class="modal-body">
+    <form method="post" asp-page="/BudgetsR2/Edit" id="editBudget">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="@Model.Id" />
+        <input type="hidden" asp-for="@Model.RowVersion" />
+        <div class="form-group">
+            <label asp-for="@Model.ShortName" class="control-label"></label>
+            <input asp-for="@Model.ShortName" class="form-control" />
+            <span asp-validation-for="@Model.ShortName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Description" class="control-label"></label>
+            <input asp-for="@Model.Description" class="form-control" />
+            <span asp-validation-for="@Model.Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.CycleStartDate" class="control-label"></label>
+            <input asp-for="@Model.CycleStartDate" class="form-control" />
+            <span asp-validation-for="@Model.CycleStartDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.CycleEndDate" class="control-label"></label>
+            <input asp-for="@Model.CycleEndDate" class="form-control" />
+            <span asp-validation-for="@Model.CycleEndDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <select asp-for="ReturnedExpenseIds" class="form-control selectpicker" id="expenses-select"
+                    asp-items="@Model.ExpenseMultiSelectList"></select>
+        </div>
+        <div class="form-group">
+            <a asp-page="..\Expenses\Edit" class="btn-outline-info btn">
+                <i class="oi oi-plus"></i>
+                Add a new Expense
+            </a>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.AllottedFunds" class="control-label"></label>
+            <input asp-for="@Model.AllottedFunds" class="form-control" />
+            <span asp-validation-for="@Model.AllottedFunds" class="text-danger"></span>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary" form="editBudget">Edit</button>
+</div>
+
+<script>
+    $(function () {
+        $('#expenses-select').multiselect({
+            enableFiltering: true,
+            enableCaseInsensitiveFiltering: true,
+            maxHeight: 400,
+            buttonClass: 'btn btn-outline-info',
+            nonSelectedText: 'Add your bills',
+            numberDisplayed: 10,
+            includeSelectAllOption: true
+        });
+    });
+</script>

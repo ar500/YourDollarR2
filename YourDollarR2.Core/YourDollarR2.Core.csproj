@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="TrackableEntities.EF.Core" Version="1.2.0" />
+  </ItemGroup>
+
 </Project>

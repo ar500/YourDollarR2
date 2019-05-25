@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TrackableEntities.Common.Core;
 
 namespace YourDollarR2.Core
 {
@@ -39,6 +40,7 @@ namespace YourDollarR2.Core
 
         public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Timestamp]
         public byte[] RowVersion { get; set; }
     }

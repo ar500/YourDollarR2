@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using YourDollarR2.Core.Services;
-using YourDollarR2.Core.Validators;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace YourDollarR2.Dtos
 {
-    public class BudgetDto
+    public class BudgetForCreateOrEditDto
     {
         public Guid Id { get; set; }
-        #region Added By User
+
         [Required]
         [MaxLength(50)]
         public string ShortName { get; set; }
@@ -30,26 +31,21 @@ namespace YourDollarR2.Dtos
 
         [Required]
         [DataType(DataType.Currency)]
-        public decimal AllottedFunds { get; set; }
+        public decimal AllottedFunds { get; set; } = 0;
 
-        [DataType(DataType.Currency)]
-        [ValidFundAllocation]
-        public decimal AllocatedFunds { get; set; }
+        [Required]
+        public IEnumerable<Guid> ReturnedExpenseIds { get; set; } = new List<Guid>();
 
-        public ICollection<ExpenseDto> Expenses { get; set; } = new List<ExpenseDto>();
-        #endregion
-        #region Automatically calculated
-        [DataType(DataType.Currency)]
-        public decimal UnAllocatedFunds { get; set; }
-
+        [Required]
         [DataType(DataType.EmailAddress)]
-        public string OwnerEmail { get; set; } = "removethis@soonest.opp";
+        public string OwnerEmail { get; set; } = "fixThis@Soon.Com";
 
-        
-        public IEnumerable<FundsInCategory> CategoryGroups { get; set; }
+        public MultiSelectList ExpenseMultiSelectList { get; set; }
+
+        public IList<ExpenseDto> Expenses { get; set; } = new List<ExpenseDto>();
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
-        #endregion
+
     }
 }
