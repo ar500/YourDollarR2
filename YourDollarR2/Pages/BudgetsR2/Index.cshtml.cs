@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -42,10 +43,11 @@ namespace YourDollarR2.Pages.BudgetsR2
         public async Task<IActionResult> OnGetCreateNewPartial()
         {
 
-            var expensesFromRepo = await _context.Expenses.ToListAsync();
-            var mappedExpenses = Mapper.Map<IEnumerable<ExpenseDto>>(expensesFromRepo);
+            var expensesFromRepo = await _context.Expenses
+                .Where(e => e.BudgetId == Budget.Id || e.BudgetId == null)
+                .ToListAsync();
 
-            var selectedIds = new List<Guid>();
+            var mappedExpenses = Mapper.Map<IEnumerable<ExpenseDto>>(expensesFromRepo);
 
             Budget.ExpenseMultiSelectList = new MultiSelectList(mappedExpenses, "Id", "ShortName");
 

@@ -5,7 +5,7 @@
     ViewData["Title"] = "Budgets";
 }
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-6">
             <h1 class="text-uppercase">Your Budgets</h1>
@@ -41,8 +41,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="card-deck-wrapper mt-3">
-            <div class="card-deck">
+            <div class="card-columns mt-3 ml-2">
                 @foreach (var budget in Model.Budgets)
                 {
                     <partial name="_Summary" model="budget" />

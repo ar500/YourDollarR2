@@ -8,9 +8,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
-using TrackableEntities.Common.Core;
-using TrackableEntities.EF.Core;
-using YourDollarR2.Core;
 using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
@@ -28,7 +25,7 @@ namespace YourDollarR2.Pages.BudgetsR2
         [BindProperty]
         public BudgetForCreateOrEditDto Budget { get; set; }
         
-        public IActionResult OnGetAsync()
+        public IActionResult OnGet()
         {
             return NotFound();
         }
@@ -110,7 +107,9 @@ namespace YourDollarR2.Pages.BudgetsR2
 
         private async Task PopulateExpenses()
         {
-            var expensesFromRepo = await _context.Expenses.ToListAsync();
+            var expensesFromRepo = await _context.Expenses
+                .Where(e => e.BudgetId == null || e.BudgetId == Budget.Id)
+                .ToListAsync();
             var mappedExpenses = Mapper.Map<IEnumerable<ExpenseDto>>(expensesFromRepo);
 
             var selectedIds = new List<Guid>();

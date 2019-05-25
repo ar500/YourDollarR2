@@ -1,0 +1,89 @@
+﻿@page "{budgetId:guid}"
+@using System.Collections.Specialized
+@model YourDollarR2.Pages.BudgetsR2.DashboardModel
+@{
+    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Budget.CategoryGroups.Select(n => n.Category).ToList());
+    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Budget.CategoryGroups.Select(t => t.TotalFunds).ToList());
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1>@Model.Budget.ShortName</h1>
+
+<div class="container border-dark border">
+    <div class="row">
+        <div class="col-sm-2 border">
+            Test
+        </div>
+        <div class="col-sm-8 border">
+            <div class="card-deck">
+                <div class="card card-default" style="width: 20rem;">
+                    <div class="card-header">
+                        <h6 class="text-muted">
+                            Funds
+                        </h6>
+                    </div>
+                    <div class="card-img-top" id="chartdiv"></div>
+                    <div class="card-body">
+                        <ul class="list-group-flush list-group">
+                            <li class="list-group-item">
+                                Allotted Funds: @Model.Budget.AllottedFunds.ToString("C")
+                            </li>
+                            <li class="list-group-item">
+                                Allocated Funds: @Model.Budget.AllocatedFunds.ToString("C")
+                            </li>
+                            @if (Model.Budget.UnAllocatedFunds > 0)
+                            {
+                                <li class="list-group-item" data-toggle="tooltip" title="You have funds that are not assigned to an expense.">
+                                    <span class="text-info text">Unallocated Funds: @Model.Budget.UnAllocatedFunds.ToString("C")</span>
+                                </li>
+                            }
+                            else if (Model.Budget.UnAllocatedFunds < 0)
+                            {
+                                <li class="list-group-item list-group-item-danger" data-toggle="tooltip" title="You have insufficiant funds to cover all of your expenses.">
+                                    <span class="text-danger text">Unallocated Funds: @Model.Budget.UnAllocatedFunds.ToString("C")</span>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="card card-default mt-3" style="width: 20rem;">
+                    <div class="card-header">
+                        <h6 class="text-muted">
+                            Categories
+                        </h6>
+                    </div>
+                    <div class="card-img-top" id="pictorialDiv"></div>
+                    <div class="card-body">
+                        <ul class="list-group-flush list-group">
+                            @foreach (var category in Model.Budget.CategoryGroups)
+                            {
+                                <li class="list-group-item">
+                                    @category.Category: @category.TotalFunds.ToString("C")
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <environment include="Development">
+        <script src="https://www.amcharts.com/lib/4/core.js"></script>
+        <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+        <script src="https://www.amcharts.com/lib/4/themes/material.js"></script>
+        <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://www.amcharts.com/lib/4/core.js"></script>
+        <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+        <script src="https://www.amcharts.com/lib/4/themes/material.js"></script>
+        <script src="https://www.amcharts.com/lib/4/lang/de_DE.js"></script>
+        <script src="https://www.amcharts.com/lib/4/geodata/germanyLow.js"></script>
+    </environment>
+
+    <script type="text/javascript" src="~/js/Dashboard.js"></script>
+}

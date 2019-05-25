@@ -17,12 +17,12 @@ else
     <input type="hidden" asp-for="Budget.Id" />
     <div class="form-group">
         <label asp-for="Budget.ShortName"></label>
-        <input asp-for="Budget.ShortName" class="form-control" />
+        <input asp-for="Budget.ShortName" class="form-control" spellcheck="true" />
         <span class="text-danger" asp-validation-for="Budget.ShortName"></span>
     </div>
     <div class="form-group">
         <label asp-for="Budget.Description"></label>
-        <input asp-for="Budget.Description" class="form-control" />
+        <input asp-for="Budget.Description" class="form-control" spellcheck="true" />
         <span class="text-danger" asp-validation-for="Budget.Description"></span>
     </div>
     <div class="form-group">

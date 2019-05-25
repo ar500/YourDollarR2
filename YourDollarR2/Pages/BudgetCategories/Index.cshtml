@@ -41,13 +41,11 @@
         </div>
     </div>
     <div class="row">
-        <div class="card-deck-wrapper mt-3">
-            <div class="card-deck">
-                @foreach (var category in Model.BudgetCategories)
-                {
-                    <partial name="_Summary" model="category" />
-                }
-            </div>
+        <div class="card-columns mt-3 ml-2">
+            @foreach (var category in Model.BudgetCategories)
+            {
+                <partial name="_Summary" model="category" />
+            }
         </div>
     </div>
 </div>

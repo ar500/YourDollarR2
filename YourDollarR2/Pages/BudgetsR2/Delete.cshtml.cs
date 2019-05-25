@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using YourDollarR2.Core;
+using YourDollarR2.Dtos;
 
 namespace YourDollarR2.Pages.BudgetsR2
 {
@@ -16,24 +19,7 @@ namespace YourDollarR2.Pages.BudgetsR2
             _context = context;
         }
 
-        [BindProperty]
-        public Budget Budget { get; set; }
-
-        public async Task<IActionResult> OnGetAsync(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Budget = await _context.Budgets.FirstOrDefaultAsync(m => m.Id == id);
-
-            if (Budget == null)
-            {
-                return NotFound();
-            }
-            return Page();
-        }
+        [BindProperty] public BudgetDto Budget { get; set; }
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
@@ -42,12 +28,33 @@ namespace YourDollarR2.Pages.BudgetsR2
                 return NotFound();
             }
 
-            Budget = await _context.Budgets.FindAsync(id);
+            var budgetToDelete = await _context.Budgets.FindAsync(id);
 
-            if (Budget != null)
+            if (budgetToDelete != null)
             {
-                _context.Budgets.Remove(Budget);
+                _context.Budgets.Remove(budgetToDelete);
                 await _context.SaveChangesAsync();
+            }
+
+            return RedirectToPage("./Index");
+        }
+
+        public async Task<IActionResult> OnGetDeletePartialAsync(Guid? id)
+        {
+            if (id.HasValue)
+            {
+                var budgetFromRepo = await _context.Budgets.FindAsync(id);
+                Budget = Mapper.Map<BudgetDto>(budgetFromRepo);
+
+                if (Budget != null)
+                {
+                    return new PartialViewResult
+                    {
+                        ViewName = "_DeletePartial",
+                        ViewData = new ViewDataDictionary<BudgetDto>(ViewData, Budget)
+                    };
+                }
+
             }
 
             return RedirectToPage("./Index");

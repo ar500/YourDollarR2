@@ -5,13 +5,6 @@
 });
 
 $(function () {
-    $('.details_button').on('click', function () {
-        var modelId = $(this).data("id");
-        $('#modalSection').load('/BudgetsR2/Details?handler=LoadDetailsPartial&id=' + modelId);
-    });
-});
-
-$(function () {
     $('.edit_button').on('click', function () {
         var modelId = $(this).data('id');
         $('#modalSection').load('/BudgetsR2/Edit?handler=LoadEditPartial&id=' + modelId);

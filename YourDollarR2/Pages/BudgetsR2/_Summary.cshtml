@@ -1,20 +1,25 @@
 ﻿@model BudgetDto
 
-<div class="card card-default mb-5" style="width: 20rem;">
+<div class="card mb-5">
     <div class="card-body">
-        <h3 class="card-title">@Model.ShortName</h3>
-        <h6 class="card-subtitle mb-2 text-muted">
-            @Model.CycleStartDate - @Model.CycleEndDate
+        <h3 class="card-title">@Html.DisplayFor(m => m.ShortName)</h3>
+        <h6 class="card-text mb-2 text-muted">
+            @Html.DisplayFor(m => m.CycleStartDate) - @Html.DisplayFor(m => m.CycleEndDate)
         </h6>
-        <span class="list-group-item">Description: @Model.Description</span>
-        <span class="list-group-item">Allotted Funds: @Model.AllottedFunds</span>
-        <span class="list-group-item">Allocated Funds: @Model.AllocatedFunds</span>
-        <span class="list-group-item">Funds Remaining: @Model.UnAllocatedFunds</span>
+        <hr />
+        <h5 class="card-text">
+            @Html.DisplayFor(m => m.Description)
+        </h5>
+        <p class="card-text">
+            Allocated Funds: @Html.DisplayFor(m => m.AllocatedFunds)
+        </p>
+        <p class="card-text">
+            Expenses attached: @Model.Expenses.Count()
+        </p>
     </div>
     <div class="card-footer">
-        <a class="btn btn-lg details_button"
-           data-id="@Model.Id" data-toggle="modal" data-target="#createModal"
-           id="detailsButton_@(Model.Id)">
+        <a class="btn btn-lg details_button" asp-page="./Dashboard"
+           asp-route-budgetId="@Model.Id">
             <i class="oi oi-zoom-in"></i>
         </a>
         <a class="btn btn-lg edit_button"
