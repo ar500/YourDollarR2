@@ -1,6 +1,6 @@
 ﻿$(function () {
     $('#createButton').on('click', function () {
-        $('#modalSection').load('BudgetCategories/Index?handler=CreateNewPartial');
+        $('#modalSection').load('/BudgetCategories/Index?handler=CreateNewPartial');
     });
 });
 

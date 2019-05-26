@@ -41,12 +41,12 @@
         </div>
     </div>
     <div class="row">
-            <div class="card-columns mt-3 ml-2">
-                @foreach (var expense in Model.Expenses)
-                {
-                    <partial name="_Summary" model="expense" />
-                }
-            </div>
+        <div class="card-columns mt-3 ml-2">
+            @foreach (var expense in Model.Expenses)
+            {
+                <partial name="_Summary" model="expense" />
+            }
+        </div>
     </div>
 </div>
 
@@ -54,6 +54,9 @@
     <div id="modalSection"></div>
 }
 
-@section Scripts{ 
+@section Scripts{
     <script type="text/javascript" src="~/js/Expenses.js"></script>
 }
+
+
+

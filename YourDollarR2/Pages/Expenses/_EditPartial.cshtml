@@ -1,27 +1,48 @@
 ﻿@model ExpenseForCreateDto
 
 <div class="modal-body">
+    <div id="addCategory" class="collapse">
+        <div class="card card-body">
+            <form id="createCategory">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="@Model.BudgetCategory.ShortName" class="control-label">Category Title</label>
+                    <input asp-for="@Model.BudgetCategory.ShortName" class="form-control" spellcheck="true" id="cat_shortname" />
+                    <span asp-validation-for="@Model.BudgetCategory.ShortName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.BudgetCategory.Description" class="control-label"></label>
+                    <input asp-for="@Model.BudgetCategory.Description" class="form-control" spellcheck="true" id="cat_description" />
+                    <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                </div>
+                <button type="button" class="btn btn-primary" id="categorySubmit" data-id="@Model.Id">Create</button>
+            </form>
+        </div>
+    </div>
     <form method="post" asp-page="/Expenses/Edit" id="editExpense">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="@Model.Id" />
         <input type="hidden" asp-for="@Model.RowVersion" />
         <div class="form-group">
             <label asp-for="@Model.ShortName" class="control-label"></label>
-            <input asp-for="@Model.ShortName" class="form-control" spellcheck="true"/>
+            <input asp-for="@Model.ShortName" class="form-control" spellcheck="true" />
             <span asp-validation-for="@Model.ShortName" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="@Model.BudgetCategory"></label>
             <select asp-for="ReturnedCategoryId" class="form-control"
                     asp-items="@Model.Categories"></select>
-            <a asp-page="..\BudgetCategories\Edit" class="btn-outline-info btn-sm">
+            <button type="button" class="btn btn-outline-info btn-sm mt-1"
+                    data-toggle="collapse" data-target="#addCategory"
+                    role="button" aria-expanded="false" aria-controls="addCategory">
                 <i class="oi oi-plus"></i>
-                Add a new category
-            </a>
+                New Category
+            </button>
         </div>
+
         <div class="form-group">
             <label asp-for="@Model.Description" class="control-label"></label>
-            <input asp-for="@Model.Description" class="form-control" spellcheck="true"/>
+            <input asp-for="@Model.Description" class="form-control" spellcheck="true" />
             <span asp-validation-for="@Model.Description" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -31,7 +52,7 @@
         </div>
         <div class="form-group">
             <label asp-for="@Model.CompanyName" class="control-label"></label>
-            <input asp-for="@Model.CompanyName" class="form-control" spellcheck="true"/>
+            <input asp-for="@Model.CompanyName" class="form-control" spellcheck="true" />
             <span asp-validation-for="@Model.CompanyName" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -42,8 +63,34 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
     <button type="submit" class="btn btn-primary" form="editExpense">Edit</button>
+    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 </div>
 
 @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    $(function () {
+        $("#categorySubmit").click(function (env) {
+            var modelId = $(this).data('id');
+            var category = new Object();
+            category.shortName = $('#cat_shortname').val();
+            category.description = $('#cat_description').val();
+            $.ajax({
+                url: 'Api/BudgetCategories',
+                type: 'POST',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(category),
+                success: function (data, textStatus, xhr) {
+                    $('.collapse').collapse("hide");
+                    $('#modalSection').load('/Expenses/Edit?handler=LoadEditPartial&id=' + modelId);
+                    console.log(data);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error in Operation');
+                }
+            });
+        });
+    });
+</script>
