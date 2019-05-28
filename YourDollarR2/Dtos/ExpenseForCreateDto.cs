@@ -19,7 +19,10 @@ namespace YourDollarR2.Dtos
 
         [Required]
         [DataType(DataType.Currency)]
-        public decimal PayoutAmount { get; set; }
+        public decimal AmountPlanned { get; set; }
+
+        [DataType(DataType.Currency)]
+        public decimal AmountSpent { get; set; }
 
         [MaxLength(50)]
         public string CompanyName { get; set; }
@@ -30,7 +33,7 @@ namespace YourDollarR2.Dtos
         [Required]
         public Guid ReturnedCategoryId { get; set; }
 
-        public IList<SelectListItem> Categories { get; set; }
+        public IList<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
 
         public BudgetCategoryDto BudgetCategory { get; set; }
 

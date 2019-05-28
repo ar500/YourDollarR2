@@ -17,7 +17,10 @@ namespace YourDollarR2.Dtos
 
         [Required]
         [DataType(DataType.Currency)]
-        public decimal PayoutAmount { get; set; }
+        public decimal AmountPlanned { get; set; }
+
+        [DataType(DataType.Currency)]
+        public decimal AmountSpent { get; set; }
 
         [MaxLength(50)]
         public string CompanyName { get; set; }

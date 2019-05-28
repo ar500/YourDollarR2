@@ -24,9 +24,14 @@
                 <span asp-validation-for="Expense.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Expense.PayoutAmount" class="control-label"></label>
-                <input asp-for="Expense.PayoutAmount" class="form-control" />
-                <span asp-validation-for="Expense.PayoutAmount" class="text-danger"></span>
+                <label asp-for="Expense.AmountPlanned" class="control-label"></label>
+                <input asp-for="Expense.AmountPlanned" class="form-control" />
+                <span asp-validation-for="Expense.AmountPlanned" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Expense.AmountSpent" class="control-label"></label>
+                <input asp-for="Expense.AmountSpent" class="form-control" />
+                <span asp-validation-for="Expense.AmountSpent" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Expense.CompanyName" class="control-label"></label>

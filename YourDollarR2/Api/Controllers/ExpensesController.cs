@@ -133,7 +133,7 @@ namespace YourDollarR2.Api.Controllers
                 return StatusCode(500, "The server was unable to handle your request");
             }
 
-            return CreatedAtAction("GetExpense", new { id = expenseToAdd.Id }, expenseToAdd);
+            return NoContent(); //CreatedAtAction("GetExpense", new { id = expenseToAdd.Id }, expenseToAdd);
         }
 
         // DELETE: api/Expenses/5

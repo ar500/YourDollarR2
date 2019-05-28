@@ -18,7 +18,7 @@ namespace YourDollarR2.Core.Services
                 .Select(g => new FundsInCategory
                 {
                     Category = g.FirstOrDefault().BudgetCategory.ShortName,
-                    TotalFunds = g.Sum(e => e.PayoutAmount)
+                    TotalFunds = g.Sum(e => e.AmountPlanned)
                 }).ToList();
 
             return groupedCategories;

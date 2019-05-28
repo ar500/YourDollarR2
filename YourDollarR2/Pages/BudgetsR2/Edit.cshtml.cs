@@ -89,7 +89,23 @@ namespace YourDollarR2.Pages.BudgetsR2
                 .ThenInclude(b => b.BudgetCategory)
                 .FirstOrDefaultAsync(b => b.Id == id);
 
+            
+
             Budget = Mapper.Map<BudgetForCreateOrEditDto>(budgetFromRepo);
+            Budget.Expense = new ExpenseForCreateDto();
+
+            var categoriesFromRepo = await _context.Categories.ToListAsync();
+
+            foreach (var budgetCategory in categoriesFromRepo)
+            {
+                Budget.Expense.Categories.Add(
+                    new SelectListItem
+                    {
+                        Value = budgetCategory.Id.ToString(),
+                        Text = budgetCategory.ShortName
+                    }
+                );
+            }
 
             await PopulateExpenses();
 

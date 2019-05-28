@@ -1,18 +1,66 @@
 ﻿@model BudgetForCreateOrEditDto
 
 <div class="modal-body">
+    <div id="addExpense" class="collapse fade">
+        <div class="card card-body">
+            <form id="createExpense">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="@Model.Expense.ShortName" class="control-label"></label>
+                    <input asp-for="@Model.Expense.ShortName" class="form-control" spellcheck="true" id="exp_shortname" />
+                    <span asp-validation-for="@Model.Expense.ShortName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Expense.BudgetCategory"></label>
+                    <select asp-for="@Model.Expense.ReturnedCategoryId" class="form-control"
+                            asp-items="@Model.Expense.Categories" id="exp_catid"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Expense.Description" class="control-label"></label>
+                    <input asp-for="@Model.Expense.Description" class="form-control" spellcheck="true" id="exp_description" />
+                    <span asp-validation-for="@Model.Expense.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Expense.AmountPlanned" class="control-label"></label>
+                    <input asp-for="@Model.Expense.AmountPlanned" class="form-control" id="exp_amountplanned" />
+                    <span asp-validation-for="@Model.Expense.AmountPlanned" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Expense.AmountSpent" class="control-label"></label>
+                    <input asp-for="@Model.Expense.AmountSpent" class="form-control" id="exp_amountspent" />
+                    <span asp-validation-for="@Model.Expense.AmountSpent" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Expense.CompanyName" class="control-label"></label>
+                    <input asp-for="@Model.Expense.CompanyName" class="form-control" spellcheck="true" id="exp_companyname" />
+                    <span asp-validation-for="@Model.Expense.CompanyName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Expense.PayoutAccountNumber" class="control-label"></label>
+                    <input asp-for="@Model.Expense.PayoutAccountNumber" class="form-control" id="exp_accountnumber" />
+                    <span asp-validation-for="@Model.Expense.PayoutAccountNumber" class="text-danger"></span>
+                </div>
+                <button type="button" class="btn btn-primary" id="expenseSubmit" data-id="@Model.Id">Create</button>
+                <button type="button" class="btn btn-secondary"
+                        data-toggle="collapse" data-target="#addExpense"
+                        role="button" aria-expanded="false" aria-controls="addExpense">
+                    Cancel
+                </button>
+            </form>
+        </div>
+    </div>
     <form method="post" asp-page="/BudgetsR2/Create" id="createBudget">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="@Model.Id" />
         <input type="hidden" asp-for="@Model.RowVersion" />
         <div class="form-group">
             <label asp-for="@Model.ShortName" class="control-label"></label>
-            <input asp-for="@Model.ShortName" class="form-control" spellcheck="true"/>
+            <input asp-for="@Model.ShortName" class="form-control" spellcheck="true" />
             <span asp-validation-for="@Model.ShortName" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="@Model.Description" class="control-label"></label>
-            <input asp-for="@Model.Description" class="form-control" spellcheck="true"/>
+            <input asp-for="@Model.Description" class="form-control" spellcheck="true" />
             <span asp-validation-for="@Model.Description" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -30,10 +78,12 @@
                     asp-items="@Model.ExpenseMultiSelectList"></select>
         </div>
         <div class="form-group">
-            <a asp-page="..\Expenses\Edit" class="btn-outline-info btn">
+            <button type="button" class="btn btn-outline-info btn-sm mt-1"
+                    data-toggle="collapse" data-target="#addExpense"
+                    role="button" aria-expanded="false" aria-controls="addExpense">
                 <i class="oi oi-plus"></i>
-                Add a new Expense
-            </a>
+                New Expense
+            </button>
         </div>
         <div class="form-group">
             <label asp-for="@Model.AllottedFunds" class="control-label"></label>
@@ -50,15 +100,48 @@
 @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
 <script>
-    $(function () {
-        $('#expenses-select').multiselect({
-            enableFiltering: true,
-            enableCaseInsensitiveFiltering: true,
-            maxHeight: 400,
-            buttonClass: 'btn btn-outline-info',
-            nonSelectedText: 'Add your bills',
-            numberDisplayed: 10,
-            includeSelectAllOption: true
+    $(document).ready(function () {
+        $(function () {
+            $('#expenses-select').multiselect({
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                maxHeight: 400,
+                buttonClass: 'btn btn-outline-info',
+                nonSelectedText: 'Add your bills',
+                numberDisplayed: 10,
+                includeSelectAllOption: true
+            });
+        });
+        $(function () {
+            $("#expenseSubmit").click(function (env) {
+                var modelId = $(this).data('id');
+                var expense = new Object();
+                expense.shortName = $('#exp_shortname').val();
+                expense.returnedCategoryId = $('#exp_catid').val();
+                expense.Description = $('#exp_description').val();
+                expense.amountPlanned = $('#exp_amountplanned').val();
+                expense.amountSpent = $('#exp_amountspent').val();
+                expense.companyName = $('#exp_companyname').val();
+                expense.payoutAccountNumber = $('#exp_accountnumber').val();
+                $.ajax({
+                    async: true,
+                    url: 'Api/Expenses',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(expense),
+                    success: function (data, textStatus, xhr) {
+                        $('.collapse').collapse("hide");
+                        $('#modalSection').load('/BudgetsR2/Index?handler=CreateNewPartial');
+                        console.log(data);
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log('Error in Post');
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
         });
     });
+
 </script>

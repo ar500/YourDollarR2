@@ -1,7 +1,7 @@
 ﻿@model ExpenseForCreateDto
 
 <div class="modal-body">
-    <div id="addCategory" class="collapse">
+    <div id="addCategory" class="collapse fade">
         <div class="card card-body">
             <form id="createCategory">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -23,7 +23,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="@Model.ShortName" class="control-label"></label>
-            <input asp-for="@Model.ShortName" class="form-control" spellcheck="true"/>
+            <input asp-for="@Model.ShortName" class="form-control" spellcheck="true" />
             <span asp-validation-for="@Model.ShortName" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -39,22 +39,27 @@
         </div>
         <div class="form-group">
             <label asp-for="@Model.Description" class="control-label"></label>
-            <input asp-for="@Model.Description" class="form-control" spellcheck="true"/>
+            <input asp-for="@Model.Description" class="form-control" spellcheck="true" />
             <span asp-validation-for="@Model.Description" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="@Model.PayoutAmount" class="control-label"></label>
-            <input asp-for="@Model.PayoutAmount" class="form-control"/>
-            <span asp-validation-for="@Model.PayoutAmount" class="text-danger"></span>
+            <label asp-for="@Model.AmountPlanned" class="control-label"></label>
+            <input asp-for="@Model.AmountPlanned" class="form-control" />
+            <span asp-validation-for="@Model.AmountPlanned" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.AmountSpent" class="control-label"></label>
+            <input asp-for="@Model.AmountSpent" class="form-control" />
+            <span asp-validation-for="@Model.AmountSpent" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="@Model.CompanyName" class="control-label"></label>
-            <input asp-for="@Model.CompanyName" class="form-control" spellcheck="true"/>
+            <input asp-for="@Model.CompanyName" class="form-control" spellcheck="true" />
             <span asp-validation-for="@Model.CompanyName" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="@Model.PayoutAccountNumber" class="control-label"></label>
-            <input asp-for="@Model.PayoutAccountNumber" class="form-control"/>
+            <input asp-for="@Model.PayoutAccountNumber" class="form-control" />
             <span asp-validation-for="@Model.PayoutAccountNumber" class="text-danger"></span>
         </div>
     </form>
@@ -74,6 +79,7 @@
             category.shortName = $('#cat_shortname').val();
             category.description = $('#cat_description').val();
             $.ajax({
+                async: true,
                 url: 'Api/BudgetCategories',
                 type: 'POST',
                 dataType: 'json',

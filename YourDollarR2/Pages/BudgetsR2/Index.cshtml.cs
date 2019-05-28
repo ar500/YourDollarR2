@@ -50,6 +50,20 @@ namespace YourDollarR2.Pages.BudgetsR2
             var mappedExpenses = Mapper.Map<IEnumerable<ExpenseDto>>(expensesFromRepo);
 
             Budget.ExpenseMultiSelectList = new MultiSelectList(mappedExpenses, "Id", "ShortName");
+            Budget.Expense = new ExpenseForCreateDto();
+
+            var categoriesFromRepo = await _context.Categories.ToListAsync();
+
+            foreach (var budgetCategory in categoriesFromRepo)
+            {
+                Budget.Expense.Categories.Add(
+                    new SelectListItem
+                    {
+                        Value = budgetCategory.Id.ToString(),
+                        Text = budgetCategory.ShortName
+                    }
+                );
+            }
 
             return new PartialViewResult
             {

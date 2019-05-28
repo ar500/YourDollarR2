@@ -123,7 +123,7 @@ namespace YourDollarR2.Api.Controllers
                 return StatusCode(500, "The server was unable to handle your request");
             }
 
-            return CreatedAtAction("GetBudgetCategory", new { id = categoryToAdd.Id }, categoryToAdd);
+            return NoContent();
         }
 
         // DELETE: api/BudgetCategories/5

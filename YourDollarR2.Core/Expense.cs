@@ -21,7 +21,11 @@ namespace YourDollarR2.Core
         [Required]
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal PayoutAmount { get; set; }
+        public decimal AmountPlanned { get; set; }
+
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal AmountSpent { get; set; }
 
         [MaxLength(50)]
         public string CompanyName { get; set; }
