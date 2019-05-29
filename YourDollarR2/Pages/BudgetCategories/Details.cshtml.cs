@@ -1,12 +1,12 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
@@ -24,7 +24,7 @@ namespace YourDollarR2.Pages.BudgetCategories
         }
 
         public BudgetCategoryDto BudgetCategory { get; set; } = new BudgetCategoryDto();
-        
+
         public async Task<IActionResult> OnGetLoadDetailsPartial(Guid? id)
         {
             Debug.WriteLine(id.Value);

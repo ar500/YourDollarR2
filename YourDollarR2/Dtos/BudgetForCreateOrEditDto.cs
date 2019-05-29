@@ -42,7 +42,7 @@ namespace YourDollarR2.Dtos
 
         public IList<ExpenseDto> Expenses { get; set; } = new List<ExpenseDto>();
 
-        public  ExpenseForCreateDto Expense { get; set; }
+        public ExpenseForCreateDto Expense { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }

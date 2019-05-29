@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System;
 using YourDollarR2.Dtos;
 
 namespace YourDollarR2.Pages.Budgets
@@ -27,7 +27,7 @@ namespace YourDollarR2.Pages.Budgets
 
             if (Budget == null)
             {
-               return RedirectToPage("../Error");
+                return RedirectToPage("../Error");
             }
 
             return Page();

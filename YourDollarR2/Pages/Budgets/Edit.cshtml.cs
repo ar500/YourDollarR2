@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.Collections.Generic;
 using YourDollarR2.Core;
 using YourDollarR2.Dtos;
 
@@ -68,10 +68,10 @@ namespace YourDollarR2.Pages.Budgets
             {
             }
 
-            
+
             TempData["Message"] = "The Budget was saved.";
 
-            return RedirectToPage("./Detail", new {budgetId = Budget.Id});
+            return RedirectToPage("./Detail", new { budgetId = Budget.Id });
         }
     }
 }

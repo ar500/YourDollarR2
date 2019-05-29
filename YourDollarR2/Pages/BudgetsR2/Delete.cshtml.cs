@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using YourDollarR2.Core;
 using YourDollarR2.Dtos;
 
 namespace YourDollarR2.Pages.BudgetsR2
@@ -28,7 +27,10 @@ namespace YourDollarR2.Pages.BudgetsR2
                 return NotFound();
             }
 
-            var budgetToDelete = await _context.Budgets.FindAsync(id);
+            var budgetToDelete = await _context.Budgets
+                .Include(e => e.Expenses)
+                .ThenInclude(c => c.BudgetCategory)
+                .FirstOrDefaultAsync(b => b.Id == id);
 
             if (budgetToDelete != null)
             {

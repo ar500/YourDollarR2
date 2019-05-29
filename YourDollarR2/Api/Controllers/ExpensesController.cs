@@ -1,16 +1,18 @@
-﻿using System;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using YourDollarR2.Core;
+using YourDollarR2.Core.Services;
 using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
+
 
 namespace YourDollarR2.Api.Controllers
 {
@@ -19,10 +21,14 @@ namespace YourDollarR2.Api.Controllers
     public class ExpensesController : ControllerBase
     {
         private readonly YourDollarContext _context;
+        private readonly IExpenseService _expenseService;
+        private readonly ILogger<ExpensesController> _logger;
 
-        public ExpensesController(YourDollarContext context)
+        public ExpensesController(YourDollarContext context, IExpenseService expenseService, ILogger<ExpensesController> logger)
         {
             _context = context;
+            _expenseService = expenseService;
+            _logger = logger;
         }
 
         // GET: api/Expenses
@@ -59,8 +65,10 @@ namespace YourDollarR2.Api.Controllers
         public async Task<IActionResult> PatchExpense(Guid id,
             [FromBody] JsonPatchDocument<ExpenseDto> patchDoc)
         {
+            _logger.LogInformation($"Patch request recieved for id: {id}");
             if (id == null || patchDoc == null)
             {
+                _logger.LogWarning($"The request was incomplete.");
                 return BadRequest();
             }
 
@@ -84,14 +92,33 @@ namespace YourDollarR2.Api.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (patchDoc.Operations.Select(p => p.path.ToLower() == "/amountspent").FirstOrDefault())
+            {
+                var usersSpent = expenseToPatch.AmountSpent;
+
+                if (patchDoc.Operations.Select(p => p.op == "add").FirstOrDefault())
+                {
+                    _logger.LogDebug($"Adding a payment of {usersSpent.ToString("C")} to the expense with id: {id}");
+                    expenseToPatch.AmountSpent = _expenseService.AddPayment(expenseFromRepo, usersSpent);
+                }
+                else
+                {
+                    _logger.LogDebug($"Pay in full requested for id: {id}");
+                    expenseToPatch.AmountSpent = _expenseService.PayInFull(expenseFromRepo);
+                }
+            }
+
             Mapper.Map(expenseToPatch, expenseFromRepo);
 
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
+                _logger.LogCritical("A DbUpdateConcurrencyException was trown.");
+                _logger.LogInformation($"The Error was: {ex.Message}");
+
                 return StatusCode(500, "The server was unable to handle your request");
             }
 
@@ -156,7 +183,13 @@ namespace YourDollarR2.Api.Controllers
 
         private bool ExpenseExists(Guid id)
         {
-            return _context.Expenses.Any(e => e.Id == id);
+            if (!_context.Expenses.Any(e => e.Id == id))
+            {
+                _logger.LogDebug($"Expense with id: {id} was not found on the server.");
+                return false;
+            }
+
+            return true;
         }
     }
 }

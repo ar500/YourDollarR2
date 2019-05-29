@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
@@ -35,8 +35,8 @@ namespace YourDollarR2.Pages.BudgetCategories
             var categoriesFromRepo = await _context.Categories.ToListAsync();
 
             var filteredCategories = from c in categoriesFromRepo
-                where string.IsNullOrWhiteSpace(SearchTerm) || c.ShortName.Contains(SearchTerm)
-                select c;
+                                     where string.IsNullOrWhiteSpace(SearchTerm) || c.ShortName.Contains(SearchTerm)
+                                     select c;
 
             BudgetCategories = Mapper.Map<IList<BudgetCategoryDto>>(filteredCategories);
         }

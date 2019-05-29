@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using YourDollarR2.Core;
 using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
@@ -25,7 +25,7 @@ namespace YourDollarR2.Pages.Expenses
 
         [BindProperty]
         public ExpenseForCreateDto Expense { get; set; }
-      
+
         public async Task<IActionResult> OnGetLoadEditPartialAsync(Guid? id)
         {
             if (!id.HasValue)
@@ -73,7 +73,7 @@ namespace YourDollarR2.Pages.Expenses
             }
 
             var chosenCategory = await _context.Categories.FindAsync(Expense.ReturnedCategoryId);
-            if(chosenCategory == null)
+            if (chosenCategory == null)
             {
                 return BadRequest();
             }
@@ -119,12 +119,12 @@ namespace YourDollarR2.Pages.Expenses
                     Selected = true
                 }
             };
-            
+
             var categoriesFromRepo = await _context.Categories
                 .Where(c => c.Id != Expense.BudgetCategory.Id)
                 .ToListAsync();
 
-            foreach(var category in categoriesFromRepo)
+            foreach (var category in categoriesFromRepo)
             {
                 Expense.Categories.Add(new SelectListItem
                 {

@@ -7,9 +7,9 @@ namespace YourDollarR2.Core.Services
     {
         public decimal CalculateAllocatedFunds(IEnumerable<FundsInCategory> categoryGroups)
         {
-            if(categoryGroups == null)
+            if (categoryGroups == null)
             {
-                return 0; 
+                return 0;
             }
 
             if (!categoryGroups.Any())
@@ -24,11 +24,11 @@ namespace YourDollarR2.Core.Services
 
         public decimal CalculateUnallocateFunds(decimal allocatedFunds, decimal allottedFunds)
         {
-            if(allottedFunds <= allocatedFunds)
+            if (allottedFunds <= allocatedFunds)
             {
                 return 0;
             }
-           
+
             return (allottedFunds - allocatedFunds);
         }
     }

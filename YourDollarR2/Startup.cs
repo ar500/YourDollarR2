@@ -1,16 +1,17 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using YourDollarR2.DataAccess;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YourDollarR2.Dtos;
+using Microsoft.Extensions.Logging;
 using YourDollarR2.Core;
 using YourDollarR2.Core.Services;
+using YourDollarR2.DataAccess;
+using YourDollarR2.Dtos;
 
 namespace YourDollarR2
 {
@@ -40,19 +41,28 @@ namespace YourDollarR2
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddDbContext<YourDollarContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("YourDollarApp")));
+
             services.AddHttpContextAccessor();
 
             services.AddTransient<IFundsInCategoryService, FundsInCategoryService>();
             services.AddTransient<ICalculateBudgetFundsService, CalculateBudgetFundsService>();
+            services.AddTransient<IExpenseService, ExpenseService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddDbContext<YourDollarContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("YourDollarApp")));
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.ClearProviders();
+                loggingBuilder.AddConsole();
+                loggingBuilder.AddEventSourceLogger();
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, 
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             IFundsInCategoryService catService, ICalculateBudgetFundsService fundsService)
         {
             if (env.IsDevelopment())
@@ -74,7 +84,7 @@ namespace YourDollarR2
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-            
+
             AutoMapper.Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<BudgetDto, Budget>();

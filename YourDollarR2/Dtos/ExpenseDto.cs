@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using YourDollarR2.Core.Validators;
 
 namespace YourDollarR2.Dtos
 {
@@ -16,9 +17,11 @@ namespace YourDollarR2.Dtos
         public string Description { get; set; }
 
         [Required]
+        [ValidDecimal]
         [DataType(DataType.Currency)]
         public decimal AmountPlanned { get; set; }
 
+        [ValidDecimal]
         [DataType(DataType.Currency)]
         public decimal AmountSpent { get; set; }
 

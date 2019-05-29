@@ -1,14 +1,12 @@
-﻿using System;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using YourDollarR2.Core;
 using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
@@ -55,7 +53,7 @@ namespace YourDollarR2.Api.Controllers
 
         // PUT: api/BudgetCategories/5
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchBudgetCategory(Guid id, 
+        public async Task<IActionResult> PatchBudgetCategory(Guid id,
             [FromBody] JsonPatchDocument<BudgetCategoryDto> patchDoc)
         {
             if (id == null || patchDoc == null)

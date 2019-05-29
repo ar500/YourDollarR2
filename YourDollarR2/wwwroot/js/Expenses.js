@@ -25,3 +25,32 @@ $(function () {
 	});
 });
 
+$(function () {
+	$('.pay_in_full').on('click', function () {
+		var expenseId = $(this).data('id');
+		var amountPaid = $(this).data('amountpaid');
+		var patch = [{ "op": "replace", "path": "/amountSpent", "value": amountPaid }];
+		$.ajax({
+			async: true,
+			url: '/Api/Expenses/' + expenseId,
+			type: 'PATCH',
+			dataType: 'json',
+			contentType: "application/json-patch+json; charset=utf-8",
+			data: JSON.stringify(patch),
+			success: function (data, textStatus, xhr) {
+				location.reload();
+				console.log(data);
+			},
+			error: function (xhr, textStatus, errorThrown) {
+				console.log('Error in Operation');
+			}
+		});
+	});
+});
+
+$('#tab-list a').on('click',
+	function (e) {
+		e.preventDefault();
+		$(this).Tab('show');
+	});
+

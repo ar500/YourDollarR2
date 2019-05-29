@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
@@ -38,7 +38,7 @@ namespace YourDollarR2.Pages.BudgetsR2
                 .ThenInclude(e => e.BudgetCategory)
                 .FirstOrDefaultAsync(b => b.Id == id.Value);
 
-            if(budgetFromRepo == null)
+            if (budgetFromRepo == null)
             {
                 return NotFound();
             }

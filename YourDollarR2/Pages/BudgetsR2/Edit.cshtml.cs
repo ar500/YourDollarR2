@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
@@ -24,7 +24,7 @@ namespace YourDollarR2.Pages.BudgetsR2
 
         [BindProperty]
         public BudgetForCreateOrEditDto Budget { get; set; }
-        
+
         public IActionResult OnGet()
         {
             return NotFound();
@@ -89,7 +89,7 @@ namespace YourDollarR2.Pages.BudgetsR2
                 .ThenInclude(b => b.BudgetCategory)
                 .FirstOrDefaultAsync(b => b.Id == id);
 
-            
+
 
             Budget = Mapper.Map<BudgetForCreateOrEditDto>(budgetFromRepo);
             Budget.Expense = new ExpenseForCreateDto();
@@ -130,7 +130,7 @@ namespace YourDollarR2.Pages.BudgetsR2
 
             var selectedIds = new List<Guid>();
 
-            foreach(var attachedExpense in Budget.Expenses)
+            foreach (var attachedExpense in Budget.Expenses)
             {
                 selectedIds.Add(attachedExpense.Id);
             }

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
@@ -45,7 +45,7 @@ namespace YourDollarR2.Pages.BudgetCategories
                 var categoryFromRepo = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id.Value);
                 BudgetCategory = Mapper.Map<BudgetCategoryDto>(categoryFromRepo);
 
-                if(BudgetCategory != null)
+                if (BudgetCategory != null)
                 {
                     return new PartialViewResult
                     {

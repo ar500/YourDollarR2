@@ -29,10 +29,12 @@ namespace YourDollarR2.Dtos
         public DateTime CycleEndDate { get; set; } = DateTime.Now.AddDays(5);
 
         [Required]
+        [ValidDecimal]
         [DataType(DataType.Currency)]
         public decimal AllottedFunds { get; set; }
 
         [DataType(DataType.Currency)]
+        [ValidDecimal]
         [ValidFundAllocation]
         public decimal AllocatedFunds { get; set; }
 
@@ -45,7 +47,7 @@ namespace YourDollarR2.Dtos
         [DataType(DataType.EmailAddress)]
         public string OwnerEmail { get; set; } = "removethis@soonest.opp";
 
-        
+
         public IEnumerable<FundsInCategory> CategoryGroups { get; set; }
 
         [Timestamp]
