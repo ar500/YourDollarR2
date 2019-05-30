@@ -12,7 +12,7 @@ namespace YourDollarR2.Core.Services
             _logger = logger;
         }
 
-        public decimal AddPayment(Expense expense, decimal payment)
+        public decimal AddPayment(ExpenseBase expense, decimal payment)
         {
             if (Math.Sign(payment) == -1)
             {
@@ -30,9 +30,9 @@ namespace YourDollarR2.Core.Services
             }
         }
 
-        public decimal PayInFull(Expense expense)
+        public decimal PayInFull(Bill bill)
         {
-            return expense.AmountPlanned;
+            return bill.AmountPlanned;
         }
     }
 }

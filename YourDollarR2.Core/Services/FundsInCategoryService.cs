@@ -5,14 +5,14 @@ namespace YourDollarR2.Core.Services
 {
     public class FundsInCategoryService : IFundsInCategoryService
     {
-        public IEnumerable<FundsInCategory> GroupExpensesByCat(IEnumerable<Expense> expenses)
+        public IEnumerable<FundsInCategory> GroupExpensesByCat(IEnumerable<Bill> bills)
         {
-            if (!expenses.Any() || expenses == null)
+            if (!bills.Any() || bills == null)
             {
                 return null;
             }
 
-            var groupedCategories = expenses
+            var groupedCategories = bills
                 .GroupBy(e => e.BudgetCategory)
                 .Where(g => g.Key != null)
                 .Select(g => new FundsInCategory

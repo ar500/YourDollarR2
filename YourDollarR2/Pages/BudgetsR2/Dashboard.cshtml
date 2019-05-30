@@ -2,17 +2,16 @@
 @using System.Collections.Specialized
 @model YourDollarR2.Pages.BudgetsR2.DashboardModel
 @{
-    var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Budget.CategoryGroups.Select(n => n.Category).ToList());
-    var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(Model.Budget.CategoryGroups.Select(t => t.TotalFunds).ToList());
     ViewData["Title"] = "Dashboard";
+    Layout = "_DashboardLayout";
 }
 
 <h1>@Model.Budget.ShortName</h1>
 
-<div class="container border-dark border">
+<div class="container-fluid border-dark border">
     <div class="row">
         <div class="col-sm-2 border">
-            Test
+            <div class="con"></div>
         </div>
         <div class="col-sm-8 border">
             <div class="card-deck">

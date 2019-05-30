@@ -36,7 +36,7 @@ namespace YourDollarR2.Pages.BudgetsR2
             }
 
             var budgetFromRepo = await _context.Budgets
-                .Include(b => b.Expenses)
+                .Include(b => b.Bills)
                 .ThenInclude(e => e.BudgetCategory)
                 .FirstOrDefaultAsync(b => b.Id == budgetId.Value);
 

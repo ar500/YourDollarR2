@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace YourDollarR2.Dtos
 {
-    public class BudgetForCreateOrEditDto
+    public class BillForCreateDto
     {
         public Guid Id { get; set; }
 
@@ -17,36 +17,37 @@ namespace YourDollarR2.Dtos
         [MaxLength(200)]
         public string Description { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime CycleStartDate { get; set; } = DateTime.Now;
+        public DateTime DueDate { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime CycleEndDate { get; set; } = DateTime.Now.AddDays(5);
+        public DateTime DatePaid { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:C0}")]
+        public decimal AmountPlanned { get; set; }
+
         [Range(0, 10000)]
-        [DataType(DataType.Currency)]
-        public decimal AllottedFunds { get; set; } = 0;
+        [DisplayFormat(DataFormatString = "{0:C0}")]
+        public decimal AmountSpent { get; set; }
+
+        [MaxLength(50)]
+        public string CompanyName { get; set; }
+
+        [MaxLength(100)]
+        public string PayoutAccountNumber { get; set; }
 
         [Required]
-        public IEnumerable<Guid> ReturnedBillIds { get; set; } = new List<Guid>();
+        public Guid ReturnedCategoryId { get; set; }
 
-        [Required]
-        [DataType(DataType.EmailAddress)]
-        public string OwnerEmail { get; set; } = "fixThis@Soon.Com";
+        public IList<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
 
-        public MultiSelectList BillsMultiSelectList { get; set; }
+        public BudgetCategoryDto BudgetCategory { get; set; }
 
-        public IList<BillDto> Bills { get; set; } = new List<BillDto>();
+        public Guid? BudgetId { get; set; }
 
-        public BillForCreateDto Bill { get; set; }
-
-        [Timestamp]
         public byte[] RowVersion { get; set; }
-
     }
 }

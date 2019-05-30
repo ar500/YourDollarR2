@@ -34,7 +34,7 @@ namespace YourDollarR2.Pages.BudgetsR2
         public async Task OnGetAsync()
         {
             var budgetsFromRepo = await _context.Budgets
-                .Include(e => e.Expenses).ThenInclude(b => b.BudgetCategory)
+                .Include(e => e.Bills).ThenInclude(b => b.BudgetCategory)
                 .ToListAsync();
             Budgets = Mapper.Map<IList<BudgetDto>>(budgetsFromRepo);
         }
@@ -42,20 +42,20 @@ namespace YourDollarR2.Pages.BudgetsR2
         public async Task<IActionResult> OnGetCreateNewPartial()
         {
 
-            var expensesFromRepo = await _context.Expenses
+            var BillsFromRepo = await _context.Bills
                 .Where(e => e.BudgetId == Budget.Id || e.BudgetId == null)
                 .ToListAsync();
 
-            var mappedExpenses = Mapper.Map<IEnumerable<ExpenseDto>>(expensesFromRepo);
+            var mappedBills = Mapper.Map<IEnumerable<BillDto>>(BillsFromRepo);
 
-            Budget.ExpenseMultiSelectList = new MultiSelectList(mappedExpenses, "Id", "ShortName");
-            Budget.Expense = new ExpenseForCreateDto();
+            Budget.BillsMultiSelectList = new MultiSelectList(mappedBills, "Id", "ShortName");
+            Budget.Bill = new BillForCreateDto();
 
             var categoriesFromRepo = await _context.Categories.ToListAsync();
 
             foreach (var budgetCategory in categoriesFromRepo)
             {
-                Budget.Expense.Categories.Add(
+                Budget.Bill.Categories.Add(
                     new SelectListItem
                     {
                         Value = budgetCategory.Id.ToString(),

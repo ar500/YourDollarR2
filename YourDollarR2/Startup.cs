@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -92,7 +93,7 @@ namespace YourDollarR2
                 cfg.CreateMap<BudgetDto, Budget>().ReverseMap()
                     .BeforeMap((s, d) => d.UnAllocatedFunds = fundsService.CalculateUnallocateFunds(d.AllocatedFunds, s.AllottedFunds))
                     .BeforeMap((s, d) => d.AllocatedFunds = fundsService.CalculateAllocatedFunds(d.CategoryGroups))
-                    .BeforeMap((s, d) => d.CategoryGroups = catService.GroupExpensesByCat(s.Expenses));
+                    .BeforeMap((s, d) => d.CategoryGroups = catService.GroupExpensesByCat(s.Bills));
 
                 cfg.CreateMap<BudgetForCreateOrEditDto, Budget>();
 
@@ -106,13 +107,20 @@ namespace YourDollarR2
 
                 cfg.CreateMap<BudgetCategoryForSelectListDto, BudgetCategory>().ReverseMap();
 
-                cfg.CreateMap<ExpenseDto, Expense>();
+                cfg.CreateMap<BillDto, Bill>()
+                    .IncludeBase<ExpenseBaseDto, ExpenseBase>();
 
-                cfg.CreateMap<ExpenseDto, Expense>().ReverseMap();
+                cfg.CreateMap<BillDto, Bill>()
+                    .IncludeBase<ExpenseBaseDto, ExpenseBase>()
+                    .ReverseMap();
 
-                cfg.CreateMap<ExpenseForCreateDto, Expense>();
+                cfg.CreateMap<ExpenseBaseDto, ExpenseBase>();
 
-                cfg.CreateMap<ExpenseForCreateDto, Expense>().ReverseMap();
+                cfg.CreateMap<ExpenseBaseDto, ExpenseBase>().ReverseMap();
+
+                cfg.CreateMap<BillForCreateDto, Bill>();
+
+                cfg.CreateMap<BillForCreateDto, Bill>().ReverseMap();
             });
 
             app.UseMvc();

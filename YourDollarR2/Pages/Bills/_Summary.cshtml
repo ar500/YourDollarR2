@@ -1,0 +1,161 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using YourDollarR2.Dtos
+@model BillDto
+
+<div class="card card-default mb-5" style="width: 23rem;">
+    <div class="card-header">
+        <div class="nav nav-tabs card-header-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-summary-tab_@(Model.Id)" data-toggle="tab" href="#nav-summary_@(Model.Id)" role="tab" aria-controls="nav-summary_@(Model.Id)" aria-selected="true">
+                Summary
+            </a>
+            <a class="nav-item nav-link" id="nav-payment-tab_@(Model)" data-toggle="tab" href="#nav-payment_@(Model.Id)" role="tab" aria-controls="nav-payment_@(Model.Id)" aria-selected="false">
+                Log Payment
+            </a>
+            @if (Model.AmountSpent >= Model.AmountPlanned)
+            {
+                <a class="nav-item nav-link disabled" href="#">
+                    Paid in full
+                </a>
+            }
+            else
+            {
+                <a class="nav-item nav-link pay_in_full" id="payinfull_@(Model.Id)" href="#" role="tab" data-id="@Model.Id">
+                    Pay In Full
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="card-body">
+        <h3 class="card-title">@Model.ShortName</h3>
+        <h6 class="card-subtitle mb-2 text-muted">
+            @Model.BudgetCategory.ShortName
+        </h6>
+        <div class="tab-content py-3 px-3 ps-sm-0" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-summary_@(Model.Id)" role="tabpanel" aria-labelledby="nav-summary-tab_@(Model.Id)">
+                <p class="card-text">@Model.Description</p>
+            </div>
+            <div class="tab-pane fade card-text" id="nav-payment_@(Model.Id)" role="tabpanel" aria-labelledby="nav-payment-tab_@(Model)">
+                <div class="row">
+                    <div class="col">
+                        <span class="text-muted">Planned:</span>
+                    </div>
+                    <div class="col">
+                        <span class="text">@Model.AmountPlanned.ToString("C")</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <span class="text-muted">Spent:</span>
+                    </div>
+                    <div class="col">
+                        <span class="text">@Model.AmountSpent.ToString("C")</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <span class="text-muted">Remaining:</span>
+                    </div>
+                    @if (Model.AmountPlanned < Model.AmountSpent)
+                    {
+                        <div class="col">
+                            <span class="text-danger">@((Model.AmountPlanned - Model.AmountSpent).ToString("C"))</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col">
+                            <span class="text-info">@((Model.AmountPlanned - Model.AmountSpent).ToString("C"))</span>
+                        </div>
+                    }
+
+                </div>
+                <div class="input-group mt-2">
+                    <form id="paymentForm" role="form" class="">
+                        <input type="hidden" asp-for="Id" id="bill_id_@(Model.Id)" />
+                        <div class="form-group">
+                            <label asp-for="@Model.DatePaid" class="control-label">Enter Date Paid:</label>
+                            <input asp-for="@Model.DatePaid" id="date_paid_@(Model.Id)" class="form-control w-80" value="@DateTime.Now.ToString("yyyy-MM-dd")"/>
+                            <span asp-validation-for="@Model.DatePaid" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.AmountSpent" class="control-label">Enter Payment:</label>
+                            <input asp-for="@Model.AmountSpent" id="amount_spent_@(Model.Id)" class="form-control w-75" value="0.00"/>
+                            <span asp-validation-for="@Model.AmountSpent" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" id="submit_@(Model.Id)" class="btn btn-primary submitPayment">Pay</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <a class="btn btn-lg details_button"
+           data-id="@Model.Id" data-toggle="modal" data-target="#createModal"
+           id="detailsButton_@(Model.Id)">
+            <i class="oi oi-zoom-in"></i>
+        </a>
+        <a class="btn btn-lg edit_button"
+           data-id="@Model.Id" data-toggle="modal" data-target="#createModal"
+           id="editButton_@(Model.Id)">
+            <i class="oi oi-brush"></i>
+        </a>
+        <a class="btn btn-lg delete_button"
+           data-id="@Model.Id" data-toggle="modal" data-target="#createModal"
+           id="deleteButton_@(Model.Id)">
+            <i class="oi oi-trash"></i>
+        </a>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(function () {
+        $('#payinfull_@(Model.Id)').on('click', function () {
+            var billId = $(this).data('id');
+            var datePaid = new Date();
+            var patch = [
+                {
+                    "op": "replace", "path": "/datePaid", "value": datePaid.toUTCString()
+                }];
+            post(billId, patch);
+        });
+    });
+
+    $(function() {
+        $('#submit_@(Model.Id)').on('click', function() {
+            var billId = $('#bill_id_@(Model.Id)').val();
+            var datePaid = $('#date_paid_@(Model.Id)').val();
+            var amountPaid = $('#amount_spent_@(Model.Id)').val();
+            var patch = [
+                {
+                    "op": "add", "path": "/amountSpent", "value": amountPaid
+                },
+                {
+                    "op": "replace", "path": "/datePaid", "value": datePaid
+                }];
+            post(billId, patch);
+        });
+    });
+
+    var post = function(billId, patchDoc) {
+        $.ajax({
+            async: true,
+            url: '/Api/Bills/' + billId,
+            type: 'PATCH',
+            dataType: 'json',
+            contentType: "application/json-patch+json; charset=utf-8",
+            data: JSON.stringify(patchDoc),
+            success: function (data, textStatus, xhr) {
+                location.reload();
+                console.log(data);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log('Error in Operation');
+            }
+        });
+    }
+</script>

@@ -1,19 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using YourDollarR2.Core;
-using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
-namespace YourDollarR2.Pages.BudgetsR2
+namespace YourDollarR2.Pages.Bills
 {
     public class CreateModel : PageModel
     {
-        private readonly YourDollarContext _context;
+        private readonly YourDollarR2.DataAccess.YourDollarContext _context;
 
-        public CreateModel(YourDollarContext context)
+        public CreateModel(YourDollarR2.DataAccess.YourDollarContext context)
         {
             _context = context;
         }
@@ -24,23 +23,23 @@ namespace YourDollarR2.Pages.BudgetsR2
         }
 
         [BindProperty]
-        public BudgetForCreateOrEditDto Budget { get; set; }
+        public BillDto Bill { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return Page();
             }
 
-            var billsFromUser = _context.Bills
-                .Where(e => Budget.ReturnedBillIds.Contains(e.Id))
-                .ToList();
+            var categoryFromRepo =
+                await _context.Categories.FirstOrDefaultAsync(c => c.Id == Bill.ReturnedCategoryId);
 
-            var budgetToCreate = Mapper.Map<Budget>(Budget);
-            budgetToCreate.Bills = billsFromUser;
+            var mappedBill = Mapper.Map<Bill>(Bill);
 
-            _context.Budgets.Add(budgetToCreate);
+            mappedBill.BudgetCategory = categoryFromRepo;
+
+            _context.Bills.Add(mappedBill);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

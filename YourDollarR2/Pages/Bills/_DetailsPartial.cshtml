@@ -1,0 +1,24 @@
+﻿@page
+@model BillDto
+
+<div class="modal-body">
+    <div class="card card-default mb-3" style="width: 18rem;">
+        <div class="card-body">
+            <h3 class="card-title">@Html.DisplayFor(m => m.ShortName)</h3>
+            <span class="card-text">@Html.DisplayFor(m => m.Description)</span>
+            <span class="card-text">@Html.DisplayFor(m => m.BudgetCategory.ShortName)</span>
+            <span class="card-text">@Html.DisplayFor(m => m.AmountPlanned)</span>
+            <span class="card-text">@Html.DisplayFor(m => m.AmountSpent)</span>
+            <span class="card-text">@Html.DisplayFor(m => m.CompanyName)</span>
+            <span class="card-text">@Html.DisplayFor(m => m.PayoutAccountNumber)</span>
+            <span class="card-text">@Html.DisplayFor(m => m.DatePaid)</span>
+            <span class="card-text">@Html.DisplayFor(m => m.DueDate)</span>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-lg" data-dismiss="modal" data-target="#createModal">
+                <i class="oi oi-circle-x"></i>
+            </a>
+        </div>
+    </div>
+</div>
+

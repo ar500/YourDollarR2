@@ -29,16 +29,16 @@ namespace YourDollarR2.Dtos
         public DateTime CycleEndDate { get; set; } = DateTime.Now.AddDays(5);
 
         [Required]
-        [ValidDecimal]
+        [Range(0, 10000)]
         [DataType(DataType.Currency)]
         public decimal AllottedFunds { get; set; }
 
         [DataType(DataType.Currency)]
-        [ValidDecimal]
+        [Range(0, 10000)]
         [ValidFundAllocation]
         public decimal AllocatedFunds { get; set; }
 
-        public ICollection<ExpenseDto> Expenses { get; set; } = new List<ExpenseDto>();
+        public ICollection<BillDto> Bills { get; set; } = new List<BillDto>();
         #endregion
         #region Automatically calculated
         [DataType(DataType.Currency)]

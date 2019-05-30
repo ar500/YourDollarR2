@@ -39,15 +39,15 @@ namespace YourDollarR2.Pages.BudgetsR2
 
             var existingBudget = await _context.Budgets
                 .Where(b => b.Id == Budget.Id)
-                .Include(p => p.Expenses)
+                .Include(p => p.Bills)
                 .ThenInclude(e => e.BudgetCategory)
                 .FirstOrDefaultAsync();
 
             Mapper.Map(Budget, existingBudget);
 
-            existingBudget.Expenses = await _context.Expenses
+            existingBudget.Bills = await _context.Bills
                 .Include(e => e.BudgetCategory)
-                .Where(e => Budget.ReturnedExpenseIds.Contains(e.Id))
+                .Where(e => Budget.ReturnedBillIds.Contains(e.Id))
                 .ToListAsync();
 
 
@@ -85,20 +85,20 @@ namespace YourDollarR2.Pages.BudgetsR2
             }
 
             var budgetFromRepo = await _context.Budgets
-                .Include(e => e.Expenses)
+                .Include(e => e.Bills)
                 .ThenInclude(b => b.BudgetCategory)
                 .FirstOrDefaultAsync(b => b.Id == id);
 
 
 
             Budget = Mapper.Map<BudgetForCreateOrEditDto>(budgetFromRepo);
-            Budget.Expense = new ExpenseForCreateDto();
+            Budget.Bill = new BillForCreateDto();
 
             var categoriesFromRepo = await _context.Categories.ToListAsync();
 
             foreach (var budgetCategory in categoriesFromRepo)
             {
-                Budget.Expense.Categories.Add(
+                Budget.Bill.Categories.Add(
                     new SelectListItem
                     {
                         Value = budgetCategory.Id.ToString(),
@@ -107,7 +107,7 @@ namespace YourDollarR2.Pages.BudgetsR2
                 );
             }
 
-            await PopulateExpenses();
+            await PopulateBills();
 
             return new PartialViewResult
             {
@@ -121,23 +121,23 @@ namespace YourDollarR2.Pages.BudgetsR2
             return _context.Budgets.Any(e => e.Id == id);
         }
 
-        private async Task PopulateExpenses()
+        private async Task PopulateBills()
         {
-            var expensesFromRepo = await _context.Expenses
+            var BillsFromRepo = await _context.Bills
                 .Where(e => e.BudgetId == null || e.BudgetId == Budget.Id)
                 .ToListAsync();
-            var mappedExpenses = Mapper.Map<IEnumerable<ExpenseDto>>(expensesFromRepo);
+            var mappedBills = Mapper.Map<IEnumerable<BillDto>>(BillsFromRepo);
 
             var selectedIds = new List<Guid>();
 
-            foreach (var attachedExpense in Budget.Expenses)
+            foreach (var attachedBill in Budget.Bills)
             {
-                selectedIds.Add(attachedExpense.Id);
+                selectedIds.Add(attachedBill.Id);
             }
 
-            Budget.ExpenseMultiSelectList = new MultiSelectList(mappedExpenses, "Id", "ShortName");
+            Budget.BillsMultiSelectList = new MultiSelectList(mappedBills, "Id", "ShortName");
 
-            Budget.ReturnedExpenseIds = selectedIds;
+            Budget.ReturnedBillIds = selectedIds;
         }
     }
 }

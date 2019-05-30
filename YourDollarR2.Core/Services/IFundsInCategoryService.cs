@@ -4,6 +4,6 @@ namespace YourDollarR2.Core.Services
 {
     public interface IFundsInCategoryService
     {
-        IEnumerable<FundsInCategory> GroupExpensesByCat(IEnumerable<Expense> expenses);
+        IEnumerable<FundsInCategory> GroupExpensesByCat(IEnumerable<Bill> bills);
     }
 }

@@ -28,7 +28,7 @@ namespace YourDollarR2.Pages.BudgetsR2
             }
 
             var budgetToDelete = await _context.Budgets
-                .Include(e => e.Expenses)
+                .Include(e => e.Bills)
                 .ThenInclude(c => c.BudgetCategory)
                 .FirstOrDefaultAsync(b => b.Id == id);
 

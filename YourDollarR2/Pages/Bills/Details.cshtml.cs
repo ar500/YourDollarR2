@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
-namespace YourDollarR2.Pages.BudgetsR2
+namespace YourDollarR2.Pages.Bills
 {
     public class DetailsModel : PageModel
     {
@@ -19,9 +19,9 @@ namespace YourDollarR2.Pages.BudgetsR2
             _context = context;
         }
 
-        public BudgetDto Budget { get; set; }
+        public BillDto Bill { get; set; }
 
-        public IActionResult OnGetAsync()
+        public IActionResult OnGet()
         {
             return NotFound();
         }
@@ -30,25 +30,21 @@ namespace YourDollarR2.Pages.BudgetsR2
         {
             if (!id.HasValue)
             {
-                return NotFound();
+                return RedirectToPage("./Index");
             }
 
-            var budgetFromRepo = await _context.Budgets
-                .Include(b => b.Bills)
-                .ThenInclude(e => e.BudgetCategory)
-                .FirstOrDefaultAsync(b => b.Id == id.Value);
-
-            if (budgetFromRepo == null)
+            var BillFromRepo = await _context.Bills.FirstOrDefaultAsync(e => e.Id == id.Value);
+            if (BillFromRepo == null)
             {
                 return NotFound();
             }
 
-            Budget = Mapper.Map<BudgetDto>(budgetFromRepo);
+            Bill = Mapper.Map<BillDto>(BillFromRepo);
 
             return new PartialViewResult
             {
                 ViewName = "_DetailsPartial",
-                ViewData = new ViewDataDictionary<BudgetDto>(ViewData, Budget)
+                ViewData = new ViewDataDictionary<BillDto>(ViewData, Bill)
             };
         }
     }

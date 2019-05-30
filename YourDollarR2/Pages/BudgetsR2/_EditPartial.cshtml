@@ -1,49 +1,49 @@
 ﻿@model BudgetForCreateOrEditDto
 
     <div class="modal-body">
-        <div id="addExpense" class="collapse fade">
+        <div id="addBill" class="collapse fade">
             <div class="card card-body">
-                <form id="createExpense">
+                <form id="createBill">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="@Model.Expense.ShortName" class="control-label"></label>
-                        <input asp-for="@Model.Expense.ShortName" class="form-control" spellcheck="true" id="exp_shortname" />
-                        <span asp-validation-for="@Model.Expense.ShortName" class="text-danger"></span>
+                        <label asp-for="@Model.Bill.ShortName" class="control-label"></label>
+                        <input asp-for="@Model.Bill.ShortName" class="form-control" spellcheck="true" id="exp_shortname" />
+                        <span asp-validation-for="@Model.Bill.ShortName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Expense.BudgetCategory"></label>
-                        <select asp-for="@Model.Expense.ReturnedCategoryId" class="form-control"
-                                asp-items="@Model.Expense.Categories" id="exp_catid"></select>
+                        <label asp-for="@Model.Bill.BudgetCategory"></label>
+                        <select asp-for="@Model.Bill.ReturnedCategoryId" class="form-control"
+                                asp-items="@Model.Bill.Categories" id="exp_catid"></select>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Expense.Description" class="control-label"></label>
-                        <input asp-for="@Model.Expense.Description" class="form-control" spellcheck="true" id="exp_description" />
-                        <span asp-validation-for="@Model.Expense.Description" class="text-danger"></span>
+                        <label asp-for="@Model.Bill.Description" class="control-label"></label>
+                        <input asp-for="@Model.Bill.Description" class="form-control" spellcheck="true" id="exp_description" />
+                        <span asp-validation-for="@Model.Bill.Description" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Expense.AmountPlanned" class="control-label"></label>
-                        <input asp-for="@Model.Expense.AmountPlanned" class="form-control" id="exp_amountplanned" />
-                        <span asp-validation-for="@Model.Expense.AmountPlanned" class="text-danger"></span>
+                        <label asp-for="@Model.Bill.AmountPlanned" class="control-label"></label>
+                        <input asp-for="@Model.Bill.AmountPlanned" class="form-control" id="exp_amountplanned" />
+                        <span asp-validation-for="@Model.Bill.AmountPlanned" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Expense.AmountSpent" class="control-label"></label>
-                        <input asp-for="@Model.Expense.AmountSpent" class="form-control" id="exp_amountspent" />
-                        <span asp-validation-for="@Model.Expense.AmountSpent" class="text-danger"></span>
+                        <label asp-for="@Model.Bill.AmountSpent" class="control-label"></label>
+                        <input asp-for="@Model.Bill.AmountSpent" class="form-control" id="exp_amountspent" />
+                        <span asp-validation-for="@Model.Bill.AmountSpent" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Expense.CompanyName" class="control-label"></label>
-                        <input asp-for="@Model.Expense.CompanyName" class="form-control" spellcheck="true" id="exp_companyname" />
-                        <span asp-validation-for="@Model.Expense.CompanyName" class="text-danger"></span>
+                        <label asp-for="@Model.Bill.CompanyName" class="control-label"></label>
+                        <input asp-for="@Model.Bill.CompanyName" class="form-control" spellcheck="true" id="exp_companyname" />
+                        <span asp-validation-for="@Model.Bill.CompanyName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.Expense.PayoutAccountNumber" class="control-label"></label>
-                        <input asp-for="@Model.Expense.PayoutAccountNumber" class="form-control" id="exp_accountnumber" />
-                        <span asp-validation-for="@Model.Expense.PayoutAccountNumber" class="text-danger"></span>
+                        <label asp-for="@Model.Bill.PayoutAccountNumber" class="control-label"></label>
+                        <input asp-for="@Model.Bill.PayoutAccountNumber" class="form-control" id="exp_accountnumber" />
+                        <span asp-validation-for="@Model.Bill.PayoutAccountNumber" class="text-danger"></span>
                     </div>
-                    <button type="button" class="btn btn-primary" id="expenseSubmit" data-id="@Model.Id">Create</button>
+                    <button type="button" class="btn btn-primary" id="BillSubmit" data-id="@Model.Id">Create</button>
                     <button type="button" class="btn btn-secondary"
-                            data-toggle="collapse" data-target="#addExpense"
-                            role="button" aria-expanded="false" aria-controls="addExpense">
+                            data-toggle="collapse" data-target="#addBill"
+                            role="button" aria-expanded="false" aria-controls="addBill">
                         Cancel
                     </button>
                 </form>
@@ -74,15 +74,15 @@
                 <span asp-validation-for="@Model.CycleEndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <select asp-for="ReturnedExpenseIds" class="form-control selectpicker" id="expenses-select"
-                        asp-items="@Model.ExpenseMultiSelectList"></select>
+                <select asp-for="ReturnedBillIds" class="form-control selectpicker" id="Bills-select"
+                        asp-items="@Model.BillsMultiSelectList"></select>
             </div>
             <div class="form-group">
                 <button type="button" class="btn btn-outline-info btn-sm mt-1"
-                        data-toggle="collapse" data-target="#addExpense"
-                        role="button" aria-expanded="false" aria-controls="addExpense">
+                        data-toggle="collapse" data-target="#addBill"
+                        role="button" aria-expanded="false" aria-controls="addBill">
                     <i class="oi oi-plus"></i>
-                    New Expense
+                    New Bill
                 </button>
             </div>
             <div class="form-group">
@@ -100,7 +100,7 @@
 <script>
     $(document).ready(function() {
         $(function() {
-            $('#expenses-select').multiselect({
+            $('#Bills-select').multiselect({
                 enableFiltering: true,
                 enableCaseInsensitiveFiltering: true,
                 maxHeight: 400,
@@ -110,23 +110,23 @@
                 includeSelectAllOption: true
             });
             $(function() {
-                $("#expenseSubmit").click(function(env) {
+                $("#BillSubmit").click(function(env) {
                     var modelId = $(this).data('id');
-                    var expense = new Object();
-                    expense.shortName = $('#exp_shortname').val();
-                    expense.returnedCategoryId = $('#exp_catid').val();
-                    expense.Description = $('#exp_description').val();
-                    expense.amountPlanned = $('#exp_amountplanned').val();
-                    expense.amountSpent = $('#exp_amountspent').val();
-                    expense.companyName = $('#exp_companyname').val();
-                    expense.payoutAccountNumber = $('#exp_accountnumber').val();
+                    var Bill = new Object();
+                    Bill.shortName = $('#exp_shortname').val();
+                    Bill.returnedCategoryId = $('#exp_catid').val();
+                    Bill.Description = $('#exp_description').val();
+                    Bill.amountPlanned = $('#exp_amountplanned').val();
+                    Bill.amountSpent = $('#exp_amountspent').val();
+                    Bill.companyName = $('#exp_companyname').val();
+                    Bill.payoutAccountNumber = $('#exp_accountnumber').val();
                     $.ajax({
                         async: true,
-                        url: 'Api/Expenses',
+                        url: 'Api/Bills',
                         type: 'POST',
                         dataType: 'json',
                         contentType: "application/json; charset=utf-8",
-                        data: JSON.stringify(expense),
+                        data: JSON.stringify(Bill),
                         success: function(data, textStatus, xhr) {
                             $('.collapse').collapse("hide");
                             $('#modalSection').load('/BudgetsR2/Edit?handler=LoadEditPartial&id=' + modelId);

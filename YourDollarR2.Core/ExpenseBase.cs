@@ -2,24 +2,27 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace YourDollarR2.Core
 {
-    public class BudgetCategory
+    public class ExpenseBase
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public string ShortName { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime DatePaid { get; set; }
+
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal AmountSpent { get; set; }
 
         [Required]
-        [MaxLength(200)]
-        public string Description { get; set; }
+        public BudgetCategory BudgetCategory { get; set; }
 
-        public ICollection<Bill> Bills { get; set; }
+        public Guid? BudgetId { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Timestamp]

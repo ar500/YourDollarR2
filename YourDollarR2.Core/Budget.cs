@@ -20,12 +20,10 @@ namespace YourDollarR2.Core
 
         [Required]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CycleStartDate { get; set; } = DateTime.Now;
 
         [Required]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime CycleEndDate { get; set; } = DateTime.Now;
 
         [Required]
@@ -37,7 +35,7 @@ namespace YourDollarR2.Core
         [DataType(DataType.EmailAddress)]
         public string OwnerEmail { get; set; } = "removethis@soonest.opp";
 
-        public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
+        public ICollection<Bill> Bills { get; set; } = new List<Bill>();
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Timestamp]
