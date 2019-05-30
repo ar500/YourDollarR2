@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace YourDollarR2.Core.Services
+namespace YourDollarR2.Core.Services.BudgetFunds
 {
     public class FundsInCategoryService : IFundsInCategoryService
     {

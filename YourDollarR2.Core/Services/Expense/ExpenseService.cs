@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
 
-namespace YourDollarR2.Core.Services
+namespace YourDollarR2.Core.Services.Expense
 {
     public class ExpenseService : IExpenseService
     {

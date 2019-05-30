@@ -9,10 +9,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using YourDollarR2.Core;
-using YourDollarR2.Core.Services;
 using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
-
+using YourDollarR2.Core.Services.Expense;
 
 namespace YourDollarR2.Api.Controllers
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace YourDollarR2.Core.Services
+namespace YourDollarR2.Core.Services.BudgetFunds
 {
     public class CalculateBudgetFundsService : ICalculateBudgetFundsService
     {
@@ -29,7 +29,7 @@ namespace YourDollarR2.Core.Services
                 return 0;
             }
 
-            return (allottedFunds - allocatedFunds);
+            return allottedFunds - allocatedFunds;
         }
     }
 }

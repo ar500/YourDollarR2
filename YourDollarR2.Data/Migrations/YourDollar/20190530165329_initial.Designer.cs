@@ -10,7 +10,7 @@ using YourDollarR2.DataAccess;
 namespace YourDollarR2.DataAccess.Migrations.YourDollar
 {
     [DbContext(typeof(YourDollarContext))]
-    [Migration("20190530143853_initial")]
+    [Migration("20190530165329_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,6 +120,30 @@ namespace YourDollarR2.DataAccess.Migrations.YourDollar
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("YourDollarR2.Core.ExpenseLogEntry", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<Guid>("BudgetCategoryId");
+
+                    b.Property<DateTime>("EntryDate");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("ShortName")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BudgetCategoryId");
+
+                    b.ToTable("ExpenseEntries");
+                });
+
             modelBuilder.Entity("YourDollarR2.Core.UnplannedExpense", b =>
                 {
                     b.Property<Guid>("Id")
@@ -155,6 +179,14 @@ namespace YourDollarR2.DataAccess.Migrations.YourDollar
                     b.HasOne("YourDollarR2.Core.Budget")
                         .WithMany("Bills")
                         .HasForeignKey("BudgetId");
+                });
+
+            modelBuilder.Entity("YourDollarR2.Core.ExpenseLogEntry", b =>
+                {
+                    b.HasOne("YourDollarR2.Core.BudgetCategory", "BudgetCategory")
+                        .WithMany()
+                        .HasForeignKey("BudgetCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("YourDollarR2.Core.UnplannedExpense", b =>

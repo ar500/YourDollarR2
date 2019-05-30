@@ -14,6 +14,8 @@ namespace YourDollarR2.DataAccess
 
         public DbSet<UnplannedExpense> UnplannedExpenses { get; set; }
 
+        public DbSet<ExpenseLogEntry> ExpenseEntries { get; set; }
+
         public YourDollarContext(DbContextOptions<YourDollarContext> options)
         : base(options)
         {

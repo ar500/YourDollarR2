@@ -74,6 +74,28 @@ namespace YourDollarR2.DataAccess.Migrations.YourDollar
                 });
 
             migrationBuilder.CreateTable(
+                name: "ExpenseEntries",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    EntryDate = table.Column<DateTime>(nullable: false),
+                    Amount = table.Column<decimal>(nullable: false),
+                    BudgetCategoryId = table.Column<Guid>(nullable: false),
+                    ShortName = table.Column<string>(maxLength: 50, nullable: true),
+                    Remarks = table.Column<string>(maxLength: 200, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExpenseEntries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ExpenseEntries_Categories_BudgetCategoryId",
+                        column: x => x.BudgetCategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UnplannedExpenses",
                 columns: table => new
                 {
@@ -106,6 +128,11 @@ namespace YourDollarR2.DataAccess.Migrations.YourDollar
                 column: "BudgetId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ExpenseEntries_BudgetCategoryId",
+                table: "ExpenseEntries",
+                column: "BudgetCategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UnplannedExpenses_BudgetCategoryId",
                 table: "UnplannedExpenses",
                 column: "BudgetCategoryId");
@@ -115,6 +142,9 @@ namespace YourDollarR2.DataAccess.Migrations.YourDollar
         {
             migrationBuilder.DropTable(
                 name: "Bills");
+
+            migrationBuilder.DropTable(
+                name: "ExpenseEntries");
 
             migrationBuilder.DropTable(
                 name: "UnplannedExpenses");

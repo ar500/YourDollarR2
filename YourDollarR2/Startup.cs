@@ -10,7 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using YourDollarR2.Core;
-using YourDollarR2.Core.Services;
+using YourDollarR2.Core.Services.BudgetFunds;
+using YourDollarR2.Core.Services.Expense;
 using YourDollarR2.DataAccess;
 using YourDollarR2.Dtos;
 
@@ -50,6 +51,8 @@ namespace YourDollarR2
             services.AddTransient<IFundsInCategoryService, FundsInCategoryService>();
             services.AddTransient<ICalculateBudgetFundsService, CalculateBudgetFundsService>();
             services.AddTransient<IExpenseService, ExpenseService>();
+
+            services.AddScoped<IExpenseLogService, ExpenseLogService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 

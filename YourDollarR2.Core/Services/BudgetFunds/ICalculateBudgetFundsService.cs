@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace YourDollarR2.Core.Services
+namespace YourDollarR2.Core.Services.BudgetFunds
 {
     public interface ICalculateBudgetFundsService
     {
